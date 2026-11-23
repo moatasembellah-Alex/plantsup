@@ -4,386 +4,139 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#1B5E35" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <title>PlantUp — AI Plant Care Assistant</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --forest: #1B5E35;
-      --fresh: #4CAF50;
-      --light: #A5D6A7;
-      --mint: #E8F5E9;
-      --bg: #F7FAF7;
-      --white: #FFFFFF;
-      --text: #202820;
-      --muted: #5F6E61;
-      --border: #E0ECE1;
-      --warn: #E68A00;
-      --warn-bg: #FFF6E5;
-      --shadow: 0 8px 24px rgba(27, 94, 53, 0.07);
-      --radius-lg: 24px;
-      --radius-md: 18px;
-      --radius-sm: 12px;
+      --forest: #1B5E35; --fresh: #4CAF50; --light: #A5D6A7; --mint: #E8F5E9;
+      --bg: #F7FAF7; --white: #FFFFFF; --text: #202820; --muted: #5F6E61; --border: #E0ECE1;
+      --warn: #E68A00; --warn-bg: #FFF6E5; --shadow: 0 8px 24px rgba(27, 94, 53, 0.07);
+      --radius-lg: 24px; --radius-md: 18px; --radius-sm: 12px;
     }
-
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-
     body {
-      background: linear-gradient(135deg, #DCE8DD 0%, #EDF4EE 100%);
-      color: var(--text);
+      background: linear-gradient(135deg, #DCE8DD 0%, #EDF4EE 100%); color: var(--text);
       font-family: 'Plus Jakarta Sans', 'IBM Plex Sans Arabic', system-ui, sans-serif;
-      display: flex;
-      justify-content: center;
-      min-height: 100vh;
-      min-height: 100dvh;
-      overscroll-behavior-y: contain;
+      display: flex; justify-content: center; min-height: 100vh; min-height: 100dvh;
     }
-    html[dir="rtl"] body {
-      font-family: 'IBM Plex Sans Arabic', 'Plus Jakarta Sans', system-ui, sans-serif;
-    }
-
+    html[dir="rtl"] body { font-family: 'IBM Plex Sans Arabic', 'Plus Jakarta Sans', system-ui, sans-serif; }
     .app-shell {
-      width: 100%;
-      max-width: 430px;
-      min-height: 100vh;
-      min-height: 100dvh;
-      background: var(--bg);
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 0 18px 55px rgba(27, 94, 53, 0.16);
-      overflow-x: hidden;
+      width: 100%; max-width: 430px; min-height: 100vh; min-height: 100dvh; background: var(--bg);
+      position: relative; display: flex; flex-direction: column;
+      box-shadow: 0 18px 55px rgba(27, 94, 53, 0.16); overflow-x: hidden;
     }
-
-    .screen-content {
-      flex: 1;
-      padding: 18px 18px calc(104px + env(safe-area-inset-bottom));
-      overflow-y: auto;
-      animation: screenIn 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-    }
+    .screen-content { flex: 1; padding: 18px 18px calc(104px + env(safe-area-inset-bottom)); overflow-y: auto; animation: screenIn 0.3s cubic-bezier(0.22, 1, 0.36, 1); }
     .screen-content.no-pad { padding: 0 0 96px; }
     .screen-content.full-screen { padding: 0; display: flex; flex-direction: column; min-height: 100vh; }
-
-    @keyframes screenIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes popIn {
-      0% { opacity: 0; transform: scale(0.92); }
-      100% { opacity: 1; transform: scale(1); }
-    }
-    @keyframes floatSlow {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-6px); }
-    }
-    @keyframes pulseRing {
-      0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.45); }
-      70% { box-shadow: 0 0 0 12px rgba(76, 175, 80, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
-    }
-    @keyframes scanLaser {
-      0%, 100% { top: 12%; }
-      50% { top: 84%; }
-    }
-    @keyframes shimmer {
-      0% { background-position: -200% 0; }
-      100% { background-position: 200% 0; }
-    }
-    @keyframes bounceDot {
-      0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
-      40% { transform: scale(1); opacity: 1; }
-    }
-    @keyframes burstLeaf {
-      0% { opacity: 1; transform: translate(0, 0) scale(0.5) rotate(0deg); }
-      100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(1.2) rotate(140deg); }
-    }
-
+    @keyframes screenIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes popIn { 0% { opacity: 0; transform: scale(0.92); } 100% { opacity: 1; transform: scale(1); } }
+    @keyframes floatSlow { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+    @keyframes pulseRing { 0% { box-shadow: 0 0 0 0 rgba(76,175,80,.45); } 70% { box-shadow: 0 0 0 12px rgba(76,175,80,0); } 100% { box-shadow: 0 0 0 0 rgba(76,175,80,0); } }
+    @keyframes scanLaser { 0%, 100% { top: 12%; } 50% { top: 84%; } }
+    @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+    @keyframes bounceDot { 0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; } 40% { transform: scale(1); opacity: 1; } }
+    @keyframes burstLeaf { 0% { opacity: 1; transform: translate(0,0) scale(0.5) rotate(0deg); } 100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(1.2) rotate(140deg); } }
+    @keyframes spin { to { transform: rotate(360deg); } }
     .anim-pop { animation: popIn 0.3s cubic-bezier(0.22, 1, 0.36, 1) backwards; }
     .anim-float { animation: floatSlow 3.5s ease-in-out infinite; }
-
-    h1 { font-size: 1.45rem; font-weight: 700; color: var(--text); line-height: 1.3; }
-    h2 { font-size: 1.12rem; font-weight: 700; color: var(--text); }
-    h3 { font-size: 0.95rem; font-weight: 600; color: var(--text); }
+    h1 { font-size: 1.45rem; font-weight: 700; line-height: 1.3; }
+    h2 { font-size: 1.12rem; font-weight: 700; }
+    h3 { font-size: 0.95rem; font-weight: 600; }
     p { font-size: 0.89rem; color: var(--muted); line-height: 1.55; }
-
     .row { display: flex; align-items: center; }
     .between { justify-content: space-between; }
-    .gap-8 { gap: 8px; }
-    .gap-12 { gap: 12px; }
-    .mt-8 { margin-top: 8px; }
-    .mt-12 { margin-top: 12px; }
-    .mt-16 { margin-top: 16px; }
-    .mt-20 { margin-top: 20px; }
-
-    button {
-      font-family: inherit; cursor: pointer; border: none; background: none; color: inherit;
-      transition: transform 0.14s ease, opacity 0.15s ease, background 0.2s ease, box-shadow 0.2s ease;
-    }
+    .gap-8 { gap: 8px; } .gap-12 { gap: 12px; }
+    .mt-8 { margin-top: 8px; } .mt-12 { margin-top: 12px; } .mt-16 { margin-top: 16px; } .mt-20 { margin-top: 20px; }
+    button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; transition: transform .14s ease, opacity .15s ease, background .2s ease; }
     button:active { transform: scale(0.96); }
-
-    .btn-primary {
-      width: 100%; background: var(--forest); color: var(--white);
-      font-weight: 600; font-size: 0.95rem; padding: 15px 20px; border-radius: 999px;
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      box-shadow: 0 8px 20px rgba(27, 94, 53, 0.24);
-    }
-    .btn-secondary {
-      width: 100%; background: var(--mint); color: var(--forest);
-      font-weight: 600; font-size: 0.9rem; padding: 13px 18px; border-radius: 999px;
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-    }
-
-    .icon-btn {
-      width: 40px; height: 40px; border-radius: 50%; background: var(--white);
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: var(--shadow); color: var(--text); flex-shrink: 0;
-    }
-
-    .card {
-      background: var(--white); border-radius: var(--radius-md); padding: 15px;
-      box-shadow: var(--shadow); transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    .card-interactive:hover { transform: translateY(-2px); box-shadow: 0 12px 26px rgba(27, 94, 53, 0.11); }
-
-    .pill {
-      display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px;
-      border-radius: 999px; font-size: 0.76rem; font-weight: 600;
-      background: var(--mint); color: var(--forest);
-    }
+    button:disabled { opacity: .55; cursor: not-allowed; }
+    .btn-primary { width: 100%; background: var(--forest); color: var(--white); font-weight: 600; font-size: 0.95rem; padding: 15px 20px; border-radius: 999px; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 8px 20px rgba(27,94,53,.24); }
+    .btn-secondary { width: 100%; background: var(--mint); color: var(--forest); font-weight: 600; font-size: 0.9rem; padding: 13px 18px; border-radius: 999px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .btn-danger { background: #FDECEC; color: #B71C1C; }
+    .icon-btn { width: 40px; height: 40px; border-radius: 50%; background: var(--white); display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow); color: var(--text); flex-shrink: 0; }
+    .card { background: var(--white); border-radius: var(--radius-md); padding: 15px; box-shadow: var(--shadow); transition: transform .2s ease, box-shadow .2s ease; }
+    .card-interactive:hover { transform: translateY(-2px); box-shadow: 0 12px 26px rgba(27,94,53,.11); }
+    .pill { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 999px; font-size: .76rem; font-weight: 600; background: var(--mint); color: var(--forest); }
     .pill.fresh { background: #E3F5E5; color: #2E7D32; }
     .pill.warn { background: var(--warn-bg); color: #B26A00; }
-
-    .photo-box {
-      position: relative;
-      overflow: hidden;
-      border-radius: var(--radius-sm);
-      background: var(--mint);
-    }
-    .photo-box img {
-      width: 100%; height: 100%; object-fit: cover; display: block;
-      transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-    }
+    .photo-box { position: relative; overflow: hidden; border-radius: var(--radius-sm); background: var(--mint); }
+    .photo-box img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .45s cubic-bezier(.22,1,.36,1); }
     .card-interactive:hover .photo-box img { transform: scale(1.06); }
-    .photo-fallback {
-      position: absolute; inset: 0; display: none; align-items: center; justify-content: center;
-    }
-
-    .search-box {
-      background: var(--white); border: 1px solid var(--border); border-radius: 999px;
-      padding: 10px 16px; display: flex; align-items: center; gap: 10px;
-    }
-    .search-box input {
-      border: none; outline: none; background: transparent; width: 100%;
-      font-family: inherit; font-size: 0.9rem; color: var(--text);
-    }
-
+    .photo-fallback { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; }
+    .search-box { background: var(--white); border: 1px solid var(--border); border-radius: 999px; padding: 10px 16px; display: flex; align-items: center; gap: 10px; }
+    .search-box input { border: none; outline: none; background: transparent; width: 100%; font-family: inherit; font-size: .9rem; color: var(--text); }
     .h-scroll { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
     .h-scroll::-webkit-scrollbar { display: none; }
-
-    .chip {
-      padding: 8px 15px; border-radius: 999px; background: var(--white);
-      border: 1px solid var(--border); font-size: 0.82rem; font-weight: 600;
-      color: var(--muted); white-space: nowrap;
-    }
+    .chip { padding: 8px 15px; border-radius: 999px; background: var(--white); border: 1px solid var(--border); font-size: .82rem; font-weight: 600; color: var(--muted); white-space: nowrap; }
     .chip.active { background: var(--forest); color: var(--white); border-color: var(--forest); }
-
-    .bottom-nav {
-      position: fixed; bottom: 0; width: 100%; max-width: 430px;
-      background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(12px);
-      border-top: 1px solid var(--border);
-      display: grid; grid-template-columns: repeat(5, 1fr); align-items: center;
-      padding: 8px 6px calc(12px + env(safe-area-inset-bottom)); z-index: 50;
-    }
-    .nav-item {
-      display: flex; flex-direction: column; align-items: center; gap: 4px;
-      font-size: 0.7rem; font-weight: 600; color: var(--muted); padding: 4px 0;
-    }
+    .bottom-nav { position: fixed; bottom: 0; width: 100%; max-width: 430px; background: rgba(255,255,255,.96); backdrop-filter: blur(12px); border-top: 1px solid var(--border); display: grid; grid-template-columns: repeat(5, 1fr); align-items: center; padding: 8px 6px calc(12px + env(safe-area-inset-bottom)); z-index: 50; }
+    .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: .7rem; font-weight: 600; color: var(--muted); padding: 4px 0; }
     .nav-item.active { color: var(--forest); }
     .nav-scan-wrap { display: flex; justify-content: center; margin-top: -30px; }
-    .nav-scan-btn {
-      width: 58px; height: 58px; border-radius: 50%;
-      background: linear-gradient(135deg, var(--forest), var(--fresh));
-      color: var(--white); display: flex; align-items: center; justify-content: center;
-      border: 4px solid var(--bg);
-      animation: pulseRing 2.6s infinite;
-    }
-
+    .nav-scan-btn { width: 58px; height: 58px; border-radius: 50%; background: linear-gradient(135deg, var(--forest), var(--fresh)); color: var(--white); display: flex; align-items: center; justify-content: center; border: 4px solid var(--bg); animation: pulseRing 2.6s infinite; }
     html[dir="rtl"] .flip-rtl { transform: scaleX(-1); }
-
-    .onboard-wrap {
-      flex: 1; display: flex; flex-direction: column; justify-content: space-between;
-      padding: 22px 22px 30px;
-      background: radial-gradient(circle at top right, #DDF2DF 0%, #F7FAF7 58%);
-    }
-    .onboard-hero {
-      height: 290px; border-radius: 30px; overflow: hidden;
-      box-shadow: 0 18px 38px rgba(27, 94, 53, 0.16);
-      margin: 18px 0; position: relative; background: var(--mint);
-    }
+    .onboard-wrap { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 22px 22px 30px; background: radial-gradient(circle at top right, #DDF2DF 0%, #F7FAF7 58%); }
+    .onboard-hero { height: 290px; border-radius: 30px; overflow: hidden; box-shadow: 0 18px 38px rgba(27,94,53,.16); margin: 18px 0; position: relative; background: var(--mint); }
     .onboard-hero img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .onboard-float-tag {
-      position: absolute; bottom: 14px; inset-inline-start: 14px;
-      background: rgba(255,255,255,0.92); backdrop-filter: blur(8px);
-      padding: 8px 14px; border-radius: 999px; font-size: 0.78rem; font-weight: 700;
-      color: var(--forest); box-shadow: var(--shadow);
-    }
+    .onboard-float-tag { position: absolute; bottom: 14px; inset-inline-start: 14px; background: rgba(255,255,255,.92); backdrop-filter: blur(8px); padding: 8px 14px; border-radius: 999px; font-size: .78rem; font-weight: 700; color: var(--forest); box-shadow: var(--shadow); }
     .dots { display: flex; gap: 8px; justify-content: center; margin: 16px 0; }
-    .dot { width: 8px; height: 8px; border-radius: 99px; background: var(--light); transition: 0.25s; }
+    .dot { width: 8px; height: 8px; border-radius: 99px; background: var(--light); transition: .25s; }
     .dot.active { width: 26px; background: var(--forest); }
-
     .quick-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-    .quick-card {
-      background: var(--mint); border-radius: var(--radius-md); padding: 14px 8px;
-      display: flex; flex-direction: column; align-items: center; gap: 8px;
-      text-align: center; font-size: 0.8rem; font-weight: 700; color: var(--forest);
-    }
-
-    .task-check {
-      width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--light);
-      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-      transition: 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-    .task-check.done {
-      background: var(--fresh); border-color: var(--fresh); color: var(--white);
-      transform: scale(1.08);
-    }
-
-    .scanner-box {
-      background: #101D14; border-radius: var(--radius-lg); height: 290px;
-      position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;
-      color: var(--white);
-    }
-    .scanner-media {
-      position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.86;
-    }
-    .scanner-frame {
-      width: 210px; height: 210px; border: 2.5px dashed var(--light); border-radius: 28px;
-      position: relative; z-index: 2; display: flex; align-items: center; justify-content: center;
-      flex-direction: column; gap: 8px; text-align: center; padding: 14px;
-      background: rgba(16, 29, 20, 0.38);
-    }
-    .scanner-actions { display:flex; gap:8px; margin-top:8px; }
-    .scan-result-item { padding:10px 0; border-top:1px solid var(--border); }
-    .scan-result-item:first-child { border-top:0; }
-    .scan-line {
-      position: absolute; left: 10px; right: 10px; height: 3px; border-radius: 99px;
-      background: var(--fresh); box-shadow: 0 0 14px 2px var(--fresh);
-      animation: scanLaser 1.25s infinite ease-in-out;
-    }
-
-    .mode-switch {
-      background: var(--white); padding: 4px; border-radius: 999px;
-      display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--border);
-    }
-    .mode-btn { padding: 8px 10px; border-radius: 999px; font-size: 0.82rem; font-weight: 700; color: var(--muted); }
+    .quick-card { background: var(--mint); border-radius: var(--radius-md); padding: 14px 8px; display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; font-size: .8rem; font-weight: 700; color: var(--forest); }
+    .task-check { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--light); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: .22s cubic-bezier(.34,1.56,.64,1); }
+    .task-check.done { background: var(--fresh); border-color: var(--fresh); color: var(--white); transform: scale(1.08); }
+    .scanner-box { background: #101D14; border-radius: var(--radius-lg); height: 290px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; color: var(--white); }
+    .scanner-media { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .9; }
+    .scanner-frame { width: 210px; height: 210px; border: 2.5px dashed var(--light); border-radius: 28px; position: relative; z-index: 2; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 8px; text-align: center; padding: 14px; background: rgba(16,29,20,.38); }
+    .scan-line { position: absolute; left: 10px; right: 10px; height: 3px; border-radius: 99px; background: var(--fresh); box-shadow: 0 0 14px 2px var(--fresh); animation: scanLaser 1.25s infinite ease-in-out; }
+    .scan-result-item { padding: 8px 0; border-top: 1px solid var(--border); }
+    .spinner { width: 26px; height: 26px; border: 3px solid var(--light); border-top-color: var(--forest); border-radius: 50%; animation: spin .8s linear infinite; margin: 20px auto; }
+    .mode-switch { background: var(--white); padding: 4px; border-radius: 999px; display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--border); }
+    .mode-btn { padding: 8px 10px; border-radius: 999px; font-size: .82rem; font-weight: 700; color: var(--muted); }
     .mode-btn.active { background: var(--forest); color: var(--white); }
-
     .plant-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
     .metrics-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-    .metric-card {
-      background: var(--white); border-radius: var(--radius-md); padding: 12px;
-      display: flex; align-items: center; gap: 10px; box-shadow: var(--shadow);
-    }
-    .metric-icon {
-      width: 38px; height: 38px; border-radius: 12px; background: var(--mint);
-      color: var(--forest); display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-    }
-
+    .metric-card { background: var(--white); border-radius: var(--radius-md); padding: 12px; display: flex; align-items: center; gap: 10px; box-shadow: var(--shadow); }
+    .metric-icon { width: 38px; height: 38px; border-radius: 12px; background: var(--mint); color: var(--forest); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .stepper { display: flex; align-items: center; gap: 10px; }
+    .stepper button { width: 30px; height: 30px; border-radius: 50%; background: var(--mint); color: var(--forest); font-weight: 700; font-size: 1.1rem; }
     .chat-area { display: flex; flex-direction: column; gap: 12px; padding-bottom: 76px; }
-    .bubble {
-      max-width: 84%; padding: 12px 15px; border-radius: 18px;
-      font-size: 0.88rem; line-height: 1.55; animation: popIn 0.25s ease;
-    }
-    .bubble.ai {
-      background: var(--white); color: var(--text); align-self: flex-start;
-      box-shadow: var(--shadow); border-end-start-radius: 4px;
-    }
-    .bubble.user {
-      background: var(--forest); color: var(--white); align-self: flex-end;
-      border-end-end-radius: 4px;
-    }
+    .bubble { max-width: 84%; padding: 12px 15px; border-radius: 18px; font-size: .88rem; line-height: 1.55; animation: popIn .25s ease; }
+    .bubble.ai { background: var(--white); color: var(--text); align-self: flex-start; box-shadow: var(--shadow); border-end-start-radius: 4px; }
+    .bubble.user { background: var(--forest); color: var(--white); align-self: flex-end; border-end-end-radius: 4px; }
     .typing-dots { display: flex; gap: 5px; padding: 4px 2px; }
-    .typing-dots span {
-      width: 7px; height: 7px; border-radius: 50%; background: var(--fresh);
-      animation: bounceDot 1.1s infinite ease-in-out;
-    }
-    .typing-dots span:nth-child(2) { animation-delay: 0.16s; }
-    .typing-dots span:nth-child(3) { animation-delay: 0.32s; }
-
-    .chat-dock {
-      position: fixed; bottom: 76px; width: 100%; max-width: 430px;
-      padding: 8px 14px; background: linear-gradient(180deg, transparent, var(--bg) 30%);
-    }
-    .chat-input-wrap {
-      background: var(--white); border-radius: 999px; border: 1px solid var(--border);
-      padding: 6px 8px 6px 14px; display: flex; align-items: center; gap: 8px; box-shadow: var(--shadow);
-    }
-    .chat-input-wrap input { border: none; outline: none; flex: 1; font-family: inherit; font-size: 0.88rem; }
-    .send-btn {
-      width: 36px; height: 36px; border-radius: 50%; background: var(--fresh); color: var(--white);
-      display: flex; align-items: center; justify-content: center;
-    }
-
-    .cal-strip { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; }
-    .cal-day {
-      background: var(--white); padding: 10px 4px; border-radius: 14px; font-size: 0.74rem;
-      color: var(--muted); display: flex; flex-direction: column; align-items: center; gap: 4px;
-    }
-    .cal-day.active { background: var(--forest); color: var(--white); transform: translateY(-2px); box-shadow: var(--shadow); }
-    .cal-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--fresh); }
-
-    .plan-card {
-      background: var(--white); border: 2px solid var(--border); border-radius: var(--radius-md);
-      padding: 16px; position: relative; transition: 0.2s;
-    }
+    .typing-dots span { width: 7px; height: 7px; border-radius: 50%; background: var(--fresh); animation: bounceDot 1.1s infinite ease-in-out; }
+    .typing-dots span:nth-child(2) { animation-delay: .16s; } .typing-dots span:nth-child(3) { animation-delay: .32s; }
+    .chat-dock { position: fixed; bottom: 76px; width: 100%; max-width: 430px; padding: 8px 14px; background: linear-gradient(180deg, transparent, var(--bg) 30%); }
+    .chat-input-wrap { background: var(--white); border-radius: 999px; border: 1px solid var(--border); padding: 6px 8px 6px 14px; display: flex; align-items: center; gap: 8px; box-shadow: var(--shadow); }
+    .chat-input-wrap input { border: none; outline: none; flex: 1; font-family: inherit; font-size: .88rem; }
+    .send-btn { width: 36px; height: 36px; border-radius: 50%; background: var(--fresh); color: var(--white); display: flex; align-items: center; justify-content: center; }
+    .plan-card { background: var(--white); border: 2px solid var(--border); border-radius: var(--radius-md); padding: 16px; position: relative; transition: .2s; }
     .plan-card.selected { border-color: var(--forest); background: var(--mint); transform: scale(1.01); }
-    .best-badge {
-      position: absolute; top: -11px; inset-inline-end: 16px;
-      background: linear-gradient(90deg, var(--fresh), #66BB6A, var(--fresh));
-      background-size: 200% 100%; animation: shimmer 2.5s infinite linear;
-      color: var(--white); font-size: 0.72rem; font-weight: 700; padding: 4px 11px; border-radius: 999px;
-    }
-
-    .switch { width: 46px; height: 26px; border-radius: 999px; background: #CBD8CC; position: relative; transition: 0.2s; }
+    .best-badge { position: absolute; top: -11px; inset-inline-end: 16px; background: linear-gradient(90deg, var(--fresh), #66BB6A, var(--fresh)); background-size: 200% 100%; animation: shimmer 2.5s infinite linear; color: var(--white); font-size: .72rem; font-weight: 700; padding: 4px 11px; border-radius: 999px; }
+    .switch { width: 46px; height: 26px; border-radius: 999px; background: #CBD8CC; position: relative; transition: .2s; }
     .switch.on { background: var(--fresh); }
-    .switch::after {
-      content: ''; position: absolute; top: 3px; inset-inline-start: 3px;
-      width: 20px; height: 20px; border-radius: 50%; background: var(--white); transition: 0.22s;
-    }
+    .switch::after { content: ''; position: absolute; top: 3px; inset-inline-start: 3px; width: 20px; height: 20px; border-radius: 50%; background: var(--white); transition: .22s; }
     .switch.on::after { transform: translateX(20px); }
     html[dir="rtl"] .switch.on::after { transform: translateX(-20px); }
-
-    .modal-backdrop {
-      position: fixed; inset: 0; background: rgba(16, 29, 20, 0.45); backdrop-filter: blur(4px);
-      z-index: 90; display: flex; align-items: flex-end; justify-content: center;
-    }
-    .modal-sheet {
-      width: 100%; max-width: 430px; background: var(--white);
-      border-radius: 26px 26px 0 0; padding: 20px 20px 28px;
-      animation: screenIn 0.25s ease;
-    }
-
-    .toast {
-      position: fixed; top: 18px; left: 50%; transform: translateX(-50%);
-      background: var(--text); color: var(--white); padding: 10px 18px;
-      border-radius: 999px; font-size: 0.82rem; font-weight: 600; z-index: 120;
-      box-shadow: 0 10px 26px rgba(0,0,0,0.2);
-    }
-
+    .modal-backdrop { position: fixed; inset: 0; background: rgba(16,29,20,.45); backdrop-filter: blur(4px); z-index: 90; display: flex; align-items: flex-end; justify-content: center; }
+    .modal-sheet { width: 100%; max-width: 430px; background: var(--white); border-radius: 26px 26px 0 0; padding: 20px 20px 28px; animation: screenIn .25s ease; }
+    .toast { position: fixed; top: 18px; left: 50%; transform: translateX(-50%); background: var(--text); color: var(--white); padding: 10px 18px; border-radius: 999px; font-size: .82rem; font-weight: 600; z-index: 120; box-shadow: 0 10px 26px rgba(0,0,0,.2); max-width: 90vw; text-align: center; }
     .burst-layer { position: fixed; inset: 0; pointer-events: none; z-index: 150; overflow: hidden; }
-    .burst-item {
-      position: fixed; font-size: 1.2rem; animation: burstLeaf 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
+    .burst-item { position: fixed; font-size: 1.2rem; animation: burstLeaf .85s cubic-bezier(.16,1,.3,1) forwards; }
+    .empty { text-align: center; padding: 34px 10px; }
+    .empty .big { font-size: 2.6rem; }
+    .clamp { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
   </style>
 </head>
 <body>
   <div class="app-shell" id="app">
     <div style="padding:40px 22px; text-align:center; margin:auto;">
       <h2 style="color:#1B5E35;">🌿 PlantUp</h2>
-      <p style="margin-top:10px;">لو ظهرت لك هذه الرسالة ولم يفتح التطبيق، فالمتصفح أو تطبيق عرض الملفات الحالي يمنع تشغيل JavaScript.<br><br>جرّب فتح الملف عبر متصفح <strong>Chrome</strong> أو الصق الكود في موقع <strong>codepen.io</strong>.</p>
+      <p style="margin-top:10px;">لو ظهرت لك هذه الرسالة ولم يفتح التطبيق، افتح الملف في Chrome.</p>
     </div>
   </div>
   <div class="burst-layer" id="burst-layer"></div>
@@ -393,9 +146,10 @@
       const app = document.getElementById('app');
       if (app && !app.dataset.runtimeError) {
         app.dataset.runtimeError = '1';
-        app.innerHTML = '<div style="padding:28px;text-align:center;margin:auto;direction:rtl"><h2 style="color:#1B5E35">تعذر تشغيل PlantUp</h2><p style="margin-top:12px">حدث خطأ في JavaScript. افتح الملف في Chrome وحدّث الصفحة. إذا استمرت المشكلة أرسل رسالة الخطأ للمطور.</p><p style="margin-top:10px;direction:ltr;overflow-wrap:anywhere">' + String(event.message || 'Unknown error') + '</p></div>';
+        app.innerHTML = '<div style="padding:28px;text-align:center;margin:auto"><h2 style="color:#1B5E35">PlantUp error</h2><p style="margin-top:10px;direction:ltr;overflow-wrap:anywhere">' + String(event.message || 'Unknown error') + '</p></div>';
       }
     });
+
     const icons = {
       home: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>',
       plant: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 20h10"/><path d="M10 20c5.5-2.5.8-6.4 3-10"/><path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z"/><path d="M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z"/></svg>',
@@ -405,10 +159,9 @@
       back: '<svg class="flip-rtl" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>',
       search: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>',
       crown: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7zm3 16h14"/></svg>',
-      sun: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>',
       drop: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>',
-      soil: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17h18M5 21h14M12 3v10m-4-4l4-4 4 4"/></svg>',
-      temp: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>',
+      room: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/></svg>',
+      cal: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',
       check: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
       doctor: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 2a2 2 0 0 0-2 2v5H4a2 2 0 0 0-2 2v2c0 1.1.9 2 2 2h5v5c0 1.1.9 2 2 2h2a2 2 0 0 0 2-2v-5h5a2 2 0 0 0 2-2v-2a2 2 0 0 0-2-2h-5V4a2 2 0 0 0-2-2h-2z"/></svg>',
       send: '<svg class="flip-rtl" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>',
@@ -418,887 +171,735 @@
       list: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>'
     };
 
-    function fallbackSvg(bg1, accent) {
-      return '<svg viewBox="0 0 100 100" width="100%" height="100%" style="background:' + bg1 + ';"><rect x="36" y="74" width="28" height="16" rx="4" fill="#D7CCC8" stroke="#1B5E35" stroke-width="1.8"/><path d="M50 74 V38 M50 58 C34 55 28 42 33 32 C44 35 50 45 50 58 Z M50 48 C66 45 73 33 67 22 C56 26 50 36 50 48 Z" fill="' + accent + '" stroke="#1B5E35" stroke-width="2"/></svg>';
+    /* ---------- Images ---------- */
+    function fallbackSvg() {
+      return '<svg viewBox="0 0 100 100" width="100%" height="100%" style="background:#E8F5E9;"><rect x="36" y="74" width="28" height="16" rx="4" fill="#D7CCC8" stroke="#1B5E35" stroke-width="1.8"/><path d="M50 74 V38 M50 58 C34 55 28 42 33 32 C44 35 50 45 50 58 Z M50 48 C66 45 73 33 67 22 C56 26 50 36 50 48 Z" fill="#4CAF50" stroke="#1B5E35" stroke-width="2"/></svg>';
     }
-
     function plantPhoto(p, style) {
       style = style || '';
+      const has = p && p.img;
       return '<div class="photo-box" style="' + style + '">' +
-        '<img src="' + p.img + '" alt="' + p.nameEn + '" loading="lazy" onerror="this.style.display=\'none\'; this.nextElementSibling.style.display=\'flex\';" />' +
-        '<div class="photo-fallback">' + fallbackSvg('#E8F5E9', '#4CAF50') + '</div>' +
-      '</div>';
+        (has ? '<img src="' + esc(p.img) + '" alt="' + esc(pname(p)) + '" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.display=\'none\'; this.nextElementSibling.style.display=\'flex\';" />' : '') +
+        '<div class="photo-fallback" style="' + (has ? '' : 'display:flex;') + '">' + fallbackSvg() + '</div></div>';
     }
 
-    const PLANTS_DB = [
-      {
-        id: 'monstera',
-        nameEn: 'Monstera Deliciosa', nameAr: 'مونستيرا ديليسيوزا', sci: 'Monstera deliciosa',
-        cat: 'Beginner', catAr: 'للمبتدئين',
-        img: 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?w=800&auto=format&fit=crop',
-        descEn: 'Iconic tropical houseplant famous for its split glossy leaves and dramatic indoor presence.',
-        descAr: 'نبتة استوائية شهيرة بأوراقها العريضة المثقبة، سهلة التربية وتضيف لمسة طبيعية فاخرة للمنزل.',
-        sunEn: 'Bright indirect light', sunAr: 'ضوء ساطع غير مباشر',
-        waterEn: 'Every 7–9 days', waterAr: 'كل 7–9 أيام',
-        soilEn: 'Airy, well-draining mix', soilAr: 'تربة خفيفة جيدة التصريف',
-        tempC: '18–27°C', tempF: '64–81°F',
-        petEn: 'Mildly toxic to pets', petAr: 'تُبعد عن الحيوانات الأليفة',
-        careEn: 'Let the top 3cm of soil dry before watering. Wipe dust off leaves weekly.',
-        careAr: 'اترك أول 3 سم من التربة تجف قبل الري التالي، وامسح الأوراق أسبوعياً بقطعة قماش رطبة.'
+    /* ---------- Translations (UI only — no plant data) ---------- */
+    const T = {
+      en: {
+        skip: 'Skip', next: 'Next', getStarted: 'Get Started',
+        slides: [
+          { tag: 'AI Recognition', title: 'Identify Any Plant Instantly', desc: 'Snap a photo and PlantUp recognises the plant and saves it to your collection automatically.' },
+          { tag: 'Smart Diagnostics', title: 'Your Pocket Plant Doctor', desc: 'Detect leaf spots, pests, or watering stress early and follow a clear recovery plan.' },
+          { tag: '24/7 Botanist & Reminders', title: 'Effortless Daily Care', desc: 'Never miss a watering day and chat anytime with your AI gardening assistant.' }
+        ],
+        nav: { home: 'Home', plants: 'My Plants', discover: 'Discover', ai: 'AI Chat' },
+        greeting: 'Welcome back 🌿',
+        quick: { identify: 'Identify', doctor: 'Plant Doctor', ask: 'Ask AI' },
+        todaysCare: "Today's Care", viewSchedule: 'Full Schedule', allCaught: 'All caught up — nothing to water today 🎉',
+        tipLabel: 'Daily Botanical Tip', tipText: 'Wipe dust off broad leaves with a damp cloth so your plants absorb more sunlight.',
+        savedPlants: 'Your Collection',
+        emptyTitle: 'No plants yet', emptyDesc: 'Scan a plant with the camera and it will be saved here automatically.', scanNow: 'Scan a plant',
+        scanTitle: 'AI Plant Scanner', modeId: 'Identify', modeDoc: 'Plant Doctor',
+        frameHint: 'Center a leaf or flower inside the frame',
+        uploadPhoto: 'Upload Photo', liveCam: 'Live Camera', stopCam: 'Stop Camera',
+        capture: 'Capture & Identify Plant',
+        identifying: 'Identifying the plant...', fetching: 'Fetching info & photo...',
+        matchFound: 'Match found', confidence: 'Confidence', alsoPossible: 'Other possibilities',
+        autoSaved: 'Saved to My Plants automatically', alreadySaved: 'Already in My Plants', saveIt: 'Save to My Plants', lowConf: 'Low confidence — check before saving',
+        viewDetails: 'View Details', remaining: 'Remaining requests today', commonNames: 'Common names',
+        noMatch: 'No match found. Try a clear photo of a leaf or flower.',
+        scanFail: 'Scan could not be completed',
+        careInst: 'About', source: 'Source: Wikipedia', noDesc: 'No description available.',
+        room: 'Location', waterEvery: 'Water every', days: 'days', nextWater: 'Next watering', addedOn: 'Added',
+        wateredNow: 'Watered now 💧', remove: 'Remove from My Plants', addToMy: '+ Add to My Plants', savedBadge: 'Saved', changeRoom: 'Change location',
+        chooseRoom: 'Choose Space for Your Plant',
+        docPrompt: 'Upload or capture a clear photo of the affected leaf for a quick diagnosis (demo).',
+        symptoms: ['Yellow Leaves', 'Brown Spots', 'Wilting', 'White Powder'],
+        runDiag: 'Diagnose Now', diagResult: 'Diagnosis Report',
+        issueName: 'Mild Overwatering & Early Leaf Spot', severity: 'Moderate Attention', treatment: 'Step-by-Step Recovery Plan',
+        steps: ['Trim severely yellowed lower leaves using clean, disinfected scissors.', 'Pause watering for 5 days until the top 4cm of soil feels dry.', 'Move to brighter indirect light with gentle air circulation.'],
+        askDocAI: 'Discuss with AI Assistant',
+        aiTitle: 'PlantUp AI Botanist', aiSub: 'Active • Bilingual Expert',
+        aiPrompts: ['Why are leaves turning yellow?', 'Best low-light plants?', 'How to propagate pothos?'],
+        aiPlaceholder: 'Ask anything about your plants...',
+        aiHello: 'Hello! 🌿 I am your PlantUp AI Botanist. Ask me anything about watering, sunlight, yellow leaves, or propagation!',
+        myJungle: 'My Plants', colTab: 'Collection', careTab: 'Plant Care',
+        searchPlants: 'Search your plants...', rooms: ['All', 'Living Room', 'Balcony', 'Bedroom'],
+        waterToday: 'Water today', waterTomorrow: 'Water tomorrow', waterIn: function (n) { return 'Water in ' + n + ' days'; }, overdue: function (n) { return 'Overdue by ' + n + ' d'; },
+        discoverTitle: 'Discover', searchDiscover: 'Search any plant...', searching: 'Searching...', noResults: 'No results.',
+        suggest: ['Monstera', 'Pothos', 'Aloe vera', 'Snake plant', 'Fern', 'Cactus'],
+        tipsGuides: 'Gardening Guides',
+        tip1Title: 'Overwatering vs. Underwatering: How to Tell',
+        tip1Body: 'Overwatered leaves turn soft, limp, and yellow from the base, while underwatered leaves feel crispy, dry, and curl inward. Always test 3cm deep into the soil with your finger before watering!',
+        tip2Title: '3-Minute Guide to Repotting Safely',
+        tip2Body: 'Choose a pot only 2–4cm wider than the current one with drainage holes. Gently loosen root balls, place in fresh airy soil, and water lightly to settle.',
+        proTitle: 'Grow Smarter with PlantUp Pro', proSub: 'Unlock unlimited AI scans, disease diagnosis, and smart climate reminders.',
+        proPerks: ['Unlimited AI Plant Identifications', 'Instant Plant Doctor & Recovery Plans', '24/7 Unlimited AI Botanist Chat', 'Smart Weather-Adjusted Reminders'],
+        annual: 'Annual Plan', annualPrice: '$83.99 / yr', annualNote: '~$6.99/mo • Billed yearly', bestValue: 'Best Value • Save 30%',
+        monthly: 'Monthly Plan', monthlyPrice: '$9.99 / mo', monthlyNote: 'Flexible monthly billing',
+        startTrial: 'Start 7-Day Free Trial', proActive: 'PlantUp Pro Active ✓',
+        profileTitle: 'Profile & Settings', freeMember: 'Free Member', proMember: 'PlantUp Pro', upgradeNow: 'Upgrade',
+        prefs: 'Preferences', langLabel: 'Language (RTL / LTR)',
+        notifs: 'Notifications', careRem: 'Care Reminders', weatherRem: 'Weather Alerts',
+        replayOnboard: 'Replay Onboarding', resetDemo: 'Delete all saved data',
+        toastAdded: 'Added to My Plants!', toastPro: 'Welcome to PlantUp Pro!', toastWatered: 'Watered! 💧', toastReset: 'App reset', toastRemoved: 'Removed'
       },
-      {
-        id: 'aloe',
-        nameEn: 'Aloe Vera', nameAr: 'صبار الألوفيرا', sci: 'Aloe barbadensis miller',
-        cat: 'Desert & Easy', catAr: 'صباريات سهلة',
-        img: 'https://images.unsplash.com/photo-1509423350716-97f9360b4e09?w=800&auto=format&fit=crop',
-        descEn: 'Healing succulent with thick gel-filled leaves that thrives on sunny windowsills.',
-        descAr: 'نبتة عصارية علاجية شهيرة بأوراقها الممتلئة بالجل، تعشق الشمس وتتحمل قلة الري.',
-        sunEn: 'Direct bright sunlight', sunAr: 'شمس ساطعة ومباشرة',
-        waterEn: 'Every 14–21 days', waterAr: 'كل 14–21 يوماً',
-        soilEn: 'Sandy cactus mix', soilAr: 'تربة رملية سريعة التصريف',
-        tempC: '16–30°C', tempF: '60–86°F',
-        petEn: 'Keep away from pets', petAr: 'تُبعد عن متناول الحيوانات',
-        careEn: 'Water deeply only when soil is completely dry. Avoid standing water.',
-        careAr: 'اسقها بعمق فقط عند جفاف التربة بالكامل، وتجنب ترك ماء راكد في صحن الأصيص.'
-      },
-      {
-        id: 'fern',
-        nameEn: 'Tropical Boston Fern', nameAr: 'سرخس بوسطن الاستوائي', sci: 'Nephrolepis exaltata',
-        cat: 'Pet-Safe', catAr: 'آمنة للحيوانات',
-        img: 'https://images.unsplash.com/photo-1497250681960-ef046c08a56e?w=800&auto=format&fit=crop',
-        descEn: 'Lush, feathery emerald fronds that purify indoor air and love humid corners.',
-        descAr: 'نبتة ريشية كثيفة الخضرة تنقي الهواء وتحب الأجواء الرطبة، وآمنة تماماً للقطط والكلاب.',
-        sunEn: 'Soft filtered light', sunAr: 'ضوء ناعم مرشح',
-        waterEn: 'Every 4–6 days', waterAr: 'كل 4–6 أيام',
-        soilEn: 'Rich peat-based mix', soilAr: 'تربة بيتموس رطبة',
-        tempC: '18–25°C', tempF: '65–77°F',
-        petEn: '100% Pet-Safe', petAr: 'آمنة تماماً للحيوانات',
-        careEn: 'Keep soil lightly moist and mist the fronds twice a week.',
-        careAr: 'حافظ على رطوبة التربة الخفيفة مع رش الأوراق بالرذاذ مرتين أسبوعياً.'
-      },
-      {
-        id: 'pothos',
-        nameEn: 'Golden Pothos', nameAr: 'نبتة البوتس الذهبية', sci: 'Epipremnum aureum',
-        cat: 'Low Light', catAr: 'إضاءة منخفضة',
-        img: 'https://images.unsplash.com/photo-1545241047-6083a3684587?w=800&auto=format&fit=crop',
-        descEn: 'Virtually indestructible trailing vine with heart-shaped leaves—perfect for shelves.',
-        descAr: 'متسلقة منزلية شديدة التحمل بأوراق على شكل قلب، مثالية للرفوف وتنمو في الإضاءة الضعيفة.',
-        sunEn: 'Low to medium indirect', sunAr: 'إضاءة منخفضة إلى متوسطة',
-        waterEn: 'Every 7–10 days', waterAr: 'كل 7–10 أيام',
-        soilEn: 'Standard potting mix', soilAr: 'تربة زراعية متوازنة',
-        tempC: '17–28°C', tempF: '62–82°F',
-        petEn: 'Mildly toxic if chewed', petAr: 'تُبعد عن الحيوانات',
-        careEn: 'Easy to propagate in water! Trim long vines to encourage fuller growth.',
-        careAr: 'سهلة الإكثار في كوب ماء! قم بتقليم الأغصان الطويلة لتشجيع نمو أوراق أكثر كثافة.'
-      },
-      {
-        id: 'succulent',
-        nameEn: 'Echeveria Rosette', nameAr: 'عصارية إيشيفيريا', sci: 'Echeveria elegans',
-        cat: 'Pet-Safe', catAr: 'آمنة للحيوانات',
-        img: 'https://images.unsplash.com/photo-1459156212016-c812468e2115?w=800&auto=format&fit=crop',
-        descEn: 'Geometric rose-shaped succulent that adds serene beauty to desks and balconies.',
-        descAr: 'نبتة عصارية هندسية تشبه الوردة، مثالية للمكاتب والشرفات المشمسة وآمنة للحيوانات.',
-        sunEn: 'Bright sun (4+ hrs)', sunAr: 'شمس ساطعة 4 ساعات+',
-        waterEn: 'Every 12–16 days', waterAr: 'كل 12–16 يوماً',
-        soilEn: 'Gritty cactus soil', soilAr: 'تربة صباريات مسامية',
-        tempC: '15–29°C', tempF: '59–84°F',
-        petEn: '100% Pet-Safe', petAr: 'آمنة تماماً للحيوانات',
-        careEn: 'Water around the soil base—avoid pooling water inside the leaves.',
-        careAr: 'اسقِ التربة مباشرة حول الساق وتجنب تجمع الماء في قلب الوردة.'
-      },
-      {
-        id: 'ficus',
-        nameEn: 'Fiddle Leaf Fig', nameAr: 'فيكس ليراتا', sci: 'Ficus lyrata',
-        cat: 'Statement', catAr: 'نباتات فاخرة',
-        img: 'https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=800&auto=format&fit=crop',
-        descEn: 'Sculptural indoor tree prized for its dramatic violin-shaped leaves.',
-        descAr: 'شجيرة منزلية أنيقة يعشقها مصممو الديكور بسبب أوراقها الكبيرة الشبيهة بآلة الكمان.',
-        sunEn: 'Bright steady indirect', sunAr: 'ضوء ساطع ثابت غير مباشر',
-        waterEn: 'Every 8–10 days', waterAr: 'كل 8–10 أيام',
-        soilEn: 'Well-aerated loamy mix', soilAr: 'تربة غنية جيدة التهوية',
-        tempC: '18–26°C', tempF: '65–79°F',
-        petEn: 'Keep away from pets', petAr: 'تُبعد عن الحيوانات',
-        careEn: 'Avoid moving it often—it loves a consistent sunny spot away from cold AC drafts.',
-        careAr: 'تفضل الثبات في مكان واحد مضيء بعيداً عن تيارات التكييف المباشرة.'
+      ar: {
+        skip: 'تخطي', next: 'التالي', getStarted: 'ابدأ الآن',
+        slides: [
+          { tag: 'تعرّف فوري بالذكاء الاصطناعي', title: 'تعرّف على أي نبات في ثوانٍ', desc: 'التقط صورة وPlantUp يتعرف على النبات ويحفظه في مجموعتك تلقائياً.' },
+          { tag: 'تشخيص دقيق', title: 'طبيب النباتات في جيبك', desc: 'اكتشف أمراض الأوراق أو الآفات أو أخطاء الري مبكراً واحصل على خطة علاج عملية.' },
+          { tag: 'مساعد ذكي 24/7 وتذكيرات', title: 'عناية يومية بدون نسيان', desc: 'تذكيرات ري لكل نبتة، ومحادثة فورية مع خبير البستنة الذكي.' }
+        ],
+        nav: { home: 'الرئيسية', plants: 'نباتاتي', discover: 'استكشف', ai: 'المساعد' },
+        greeting: 'أهلاً بك 🌿',
+        quick: { identify: 'تعرّف', doctor: 'طبيب النبات', ask: 'اسأل الخبير' },
+        todaysCare: 'مهام العناية اليوم', viewSchedule: 'الجدول الكامل', allCaught: 'مفيش حاجة تتسقي النهاردة 🎉',
+        tipLabel: 'نصيحة نباتية يومية', tipText: 'امسح الغبار عن الأوراق العريضة بقطعة قماش رطبة لمساعدة نباتاتك على امتصاص ضوء أكثر.',
+        savedPlants: 'مجموعتك المحفوظة',
+        emptyTitle: 'لا توجد نباتات بعد', emptyDesc: 'صوّر أي نبات بالكاميرا وسيُحفظ هنا تلقائياً.', scanNow: 'صوّر نبات',
+        scanTitle: 'الماسح الذكي للنباتات', modeId: 'تعرّف', modeDoc: 'طبيب النبات',
+        frameHint: 'ضع الورقة أو الزهرة في منتصف الإطار',
+        uploadPhoto: 'رفع صورة', liveCam: 'كاميرا حية', stopCam: 'إغلاق الكاميرا',
+        capture: 'التقط الصورة وتعرّف على النبات',
+        identifying: 'جاري التعرف على النبات...', fetching: 'جاري جلب المعلومات والصورة...',
+        matchFound: 'تم التعرف', confidence: 'نسبة الثقة', alsoPossible: 'احتمالات أخرى',
+        autoSaved: 'تم الحفظ في نباتاتي تلقائياً', alreadySaved: 'موجودة بالفعل في نباتاتي', saveIt: 'احفظ في نباتاتي', lowConf: 'ثقة منخفضة — تأكد قبل الحفظ',
+        viewDetails: 'عرض التفاصيل', remaining: 'الطلبات المتبقية اليوم', commonNames: 'الأسماء الشائعة',
+        noMatch: 'لم يتم العثور على تطابق. جرّب صورة واضحة لورقة أو زهرة.',
+        scanFail: 'تعذر إتمام الفحص',
+        careInst: 'نبذة', source: 'المصدر: ويكيبيديا', noDesc: 'لا يوجد وصف متاح.',
+        room: 'المكان', waterEvery: 'الري كل', days: 'أيام', nextWater: 'الري القادم', addedOn: 'أضيفت',
+        wateredNow: 'تم الري الآن 💧', remove: 'حذف من نباتاتي', addToMy: '+ أضف إلى نباتاتي', savedBadge: 'محفوظة', changeRoom: 'تغيير المكان',
+        chooseRoom: 'اختر مكان النبتة في منزلك',
+        docPrompt: 'ارفع صورة واضحة للورقة المصابة لتشخيص سريع (تجريبي).',
+        symptoms: ['اصفرار الأوراق', 'بقع بنية', 'ذبول', 'بودرة بيضاء'],
+        runDiag: 'تشخيص الحالة الآن', diagResult: 'تقرير التشخيص',
+        issueName: 'إفراط خفيف في الري وبداية تبقع', severity: 'يحتاج عناية متوسطة', treatment: 'خطة العلاج خطوة بخطوة',
+        steps: ['قص الأوراق السفلية شديدة الاصفرار بمقص نظيف ومعقّم.', 'توقف عن الري لمدة 5 أيام حتى تجف أول 4 سم من التربة.', 'انقل النبات لمكان بإضاءة ساطعة غير مباشرة مع تهوية جيدة.'],
+        askDocAI: 'ناقش النتيجة مع المساعد الذكي',
+        aiTitle: 'خبير PlantUp الذكي', aiSub: 'نشط • خبير ثنائي اللغة',
+        aiPrompts: ['لماذا تصفر أوراق نباتي؟', 'أفضل نباتات للإضاءة الضعيفة؟', 'كيف أكثر نبتة البوتس؟'],
+        aiPlaceholder: 'اسأل أي سؤال عن نباتاتك...',
+        aiHello: 'أهلاً! 🌿 أنا خبير PlantUp الذكي. اسألني عن الري، الإضاءة، اصفرار الأوراق، أو إكثار النباتات!',
+        myJungle: 'نباتاتي', colTab: 'المجموعة', careTab: 'جدول العناية',
+        searchPlants: 'ابحث في نباتاتك...', rooms: ['الكل', 'غرفة المعيشة', 'البلكونة', 'غرفة النوم'],
+        waterToday: 'الري اليوم', waterTomorrow: 'الري غداً', waterIn: function (n) { return 'الري بعد ' + n + ' أيام'; }, overdue: function (n) { return 'متأخرة ' + n + ' يوم'; },
+        discoverTitle: 'استكشف', searchDiscover: 'ابحث عن أي نبات...', searching: 'جاري البحث...', noResults: 'لا توجد نتائج.',
+        suggest: ['مونستيرا', 'بوتس', 'ألوفيرا', 'سانسيفيريا', 'سرخس', 'صبار'],
+        tipsGuides: 'أدلة العناية السريعة',
+        tip1Title: 'الفرق بين زيادة الري وقلة الري: كيف تميزهما؟',
+        tip1Body: 'الأوراق الزائدة في الري تصبح طرية ومصفرة من القاعدة، بينما الأوراق العطشى تكون جافة ومقرمشة وتلتف للداخل. افحص عمق 3 سم من التربة بإصبعك قبل كل رية!',
+        tip2Title: 'دليل نقل النبات لأصيص أكبر في 3 دقائق',
+        tip2Body: 'اختر أصيصاً أوسع بـ 2 إلى 4 سم فقط من الحالي مع فتحات تصريف سفلية، فكك الجذور برفق وضع تربة جديدة مهوّاة ثم اسقه برفق.',
+        proTitle: 'اعتنِ بنباتاتك بذكاء مع PlantUp Pro', proSub: 'افتح فحوصات لا محدودة، تشخيص الأمراض، وتنبيهات الطقس الذكية.',
+        proPerks: ['تعرّف لا محدود على النباتات بالذكاء الاصطناعي', 'تشخيص فوري لأمراض النباتات وخطط العلاج', 'محادثة مفتوحة 24/7 مع خبير البستنة الذكي', 'تذكيرات ري ذكية تتكيف مع حالة الطقس'],
+        annual: 'الخطة السنوية', annualPrice: '$83.99 / سنة', annualNote: 'حوالي $6.99 شهرياً • تُدفع سنوياً', bestValue: 'أفضل قيمة • وفّر 30%',
+        monthly: 'الخطة الشهرية', monthlyPrice: '$9.99 / شهر', monthlyNote: 'اشتراك شهري مرن',
+        startTrial: 'ابدأ تجربة مجانية 7 أيام', proActive: 'اشتراك Pro مفعّل ✓',
+        profileTitle: 'الملف الشخصي والإعدادات', freeMember: 'عضو مجاني', proMember: 'عضو PlantUp Pro', upgradeNow: 'ترقية',
+        prefs: 'التفضيلات', langLabel: 'اللغة (عربي / English)',
+        notifs: 'الإشعارات', careRem: 'تذكيرات العناية', weatherRem: 'تنبيهات الطقس',
+        replayOnboard: 'إعادة عرض شاشات الترحيب', resetDemo: 'حذف كل البيانات المحفوظة',
+        toastAdded: 'تمت الإضافة إلى نباتاتي 🌿', toastPro: 'أهلاً بك في PlantUp Pro! ✨', toastWatered: 'تم الري 💧', toastReset: 'تمت إعادة ضبط التطبيق', toastRemoved: 'تم الحذف'
       }
-    ];
-
-    const FEATURED_IMG = 'https://images.unsplash.com/photo-1463320726281-696a485928c7?w=900&auto=format&fit=crop';
+    };
     const ONBOARD_IMGS = [
       'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?w=900&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?w=900&auto=format&fit=crop',
       'https://images.unsplash.com/photo-1463936575829-25148e1db1b8?w=900&auto=format&fit=crop'
     ];
 
-    const T = {
-      en: {
-        skip: 'Skip', next: 'Next', getStarted: 'Get Started',
-        slides: [
-          { tag: 'AI Recognition • 99% Accuracy', title: 'Identify Any Plant Instantly', desc: 'Snap a live photo or upload an image to discover plant names and exact care guides in seconds.' },
-          { tag: 'Smart Diagnostics', title: 'Your Pocket Plant Doctor', desc: 'Detect leaf spots, pests, or watering stress early and follow a clear recovery plan.' },
-          { tag: '24/7 Botanist & Reminders', title: 'Effortless Daily Care', desc: 'Never miss a watering day and chat anytime with your personal AI gardening assistant.' }
-        ],
-        nav: { home: 'Home', plants: 'My Plants', scan: 'Scan', discover: 'Discover', ai: 'AI Chat' },
-        greeting: 'Good afternoon, Layla', weather: '24°C • 48% Humidity • Cairo',
-        quick: { identify: 'Identify', doctor: 'Plant Doctor', ask: 'Ask AI' },
-        todaysCare: "Today's Care", viewSchedule: 'Full Schedule',
-        tipLabel: 'Daily Botanical Tip',
-        tipText: 'Wipe dust off broad leaves with a damp cloth so your plants absorb up to 30% more sunlight.',
-        savedPlants: 'Your Collection',
-        scanTitle: 'AI Plant Scanner', modeId: 'Identify', modeDoc: 'Plant Doctor',
-        frameHint: 'Center a leaf or flower inside the frame',
-        uploadPhoto: 'Upload Photo', liveCam: 'Live Camera', stopCam: 'Stop Camera', trySample: 'Sample Scan',
-        scanning: 'Analyzing leaf texture & veins...', matchFound: '98% Match Found', viewDetails: 'View Full Care Guide',
-        sun: 'Sunlight', water: 'Watering', soil: 'Soil', temp: 'Temperature',
-        careInst: 'Care Instructions', addToMy: '+ Add to My Plants', savedBadge: 'Saved in My Plants',
-        chooseRoom: 'Choose Space for Your Plant',
-        docPrompt: 'Upload or capture a clear photo of the affected leaf for an instant diagnosis.',
-        symptoms: ['Yellow Leaves', 'Brown Spots', 'Wilting', 'White Powder'],
-        runDiag: 'Diagnose Now', diagResult: 'Diagnosis Report',
-        issueName: 'Mild Overwatering & Early Leaf Spot', severity: 'Moderate Attention',
-        treatment: 'Step-by-Step Recovery Plan',
-        steps: [
-          'Trim severely yellowed lower leaves using clean, disinfected scissors.',
-          'Pause watering for 5 days until the top 4cm of soil feels dry.',
-          'Move to brighter indirect light with gentle air circulation.'
-        ],
-        askDocAI: 'Discuss with AI Assistant',
-        aiTitle: 'PlantUp AI Botanist', aiSub: 'Active • Bilingual Expert',
-        aiPrompts: ['Why are leaves turning yellow?', 'Best low-light plants?', 'How to propagate pothos?'],
-        aiPlaceholder: 'Ask anything about your plants...',
-        myJungle: 'My Plants', colTab: 'Collection', careTab: 'Plant Care',
-        searchPlants: 'Search your plants...', rooms: ['All', 'Living Room', 'Balcony', 'Bedroom'],
-        tasksDone: 'tasks completed today', waterAction: 'Water 250ml', fertAction: 'Liquid Fertilizer', pruneAction: 'Mist & Prune',
-        discoverTitle: 'Discover', searchDiscover: 'Search plants & gardening guides...',
-        cats: ['All', 'Beginner', 'Low Light', 'Pet-Safe', 'Desert & Easy'],
-        featuredTag: 'SEASONAL GUIDE', featuredTitle: 'Top Air-Purifying Plants for Modern Homes',
-        popularPlants: 'Explore Plants', tipsGuides: 'Gardening Guides',
-        tip1Title: 'Overwatering vs. Underwatering: How to Tell',
-        tip1Body: 'Overwatered leaves turn soft, limp, and yellow from the base, while underwatered leaves feel crispy, dry, and curl inward. Always test 3cm deep into the soil with your finger before watering!',
-        tip2Title: '3-Minute Guide to Repotting Safely',
-        tip2Body: 'Choose a pot only 2–4cm wider than the current one with drainage holes. Gently loosen root balls, place in fresh airy soil, and water lightly to settle.',
-        proTitle: 'Grow Smarter with PlantUp Pro',
-        proSub: 'Unlock unlimited AI scans, disease diagnosis, and smart climate reminders.',
-        proPerks: ['Unlimited AI Plant Identifications', 'Instant Plant Doctor & Recovery Plans', '24/7 Unlimited AI Botanist Chat', 'Smart Weather-Adjusted Reminders'],
-        annual: 'Annual Plan', annualPrice: '$83.99 / yr', annualNote: '~$6.99/mo • Billed yearly', bestValue: 'Best Value • Save 30%',
-        monthly: 'Monthly Plan', monthlyPrice: '$9.99 / mo', monthlyNote: 'Flexible monthly billing',
-        startTrial: 'Start 7-Day Free Trial', proActive: 'PlantUp Pro Active ✓',
-        profileTitle: 'Profile & Settings', freeMember: 'Free Member', proMember: 'PlantUp Pro', upgradeNow: 'Upgrade',
-        prefs: 'Preferences', langLabel: 'Language (RTL / LTR)', unitsLabel: 'Temperature Units',
-        notifs: 'Notifications', careRem: 'Care Reminders', weatherRem: 'Weather Alerts',
-        replayOnboard: 'Replay Onboarding', resetDemo: 'Reset Saved Data',
-        toastAdded: 'Added to My Plants!', toastPro: 'Welcome to PlantUp Pro!', toastDone: 'Great job! Task completed', toastReset: 'App reset to defaults'
-      },
-      ar: {
-        skip: 'تخطي', next: 'التالي', getStarted: 'ابدأ الآن',
-        slides: [
-          { tag: 'تعرّف فوري بالذكاء الاصطناعي', title: 'تعرّف على أي نبات في ثوانٍ', desc: 'التقط صورة بالكاميرا أو ارفعها من هاتفك لتعرف اسم النبات ودليل العناية الكامل به.' },
-          { tag: 'تشخيص طبي دقيق', title: 'طبيب النباتات في جيبك', desc: 'اكتشف أمراض الأوراق أو الآفات أو أخطاء الري مبكراً واحصل على خطة علاج عملية.' },
-          { tag: 'مساعد ذكي 24/7 وتذكيرات', title: 'عناية يومية بدون نسيان', desc: 'تذكيرات ري مخصصة لكل نبتة، ومحادثة فورية مع خبير البستنة الذكي.' }
-        ],
-        nav: { home: 'الرئيسية', plants: 'نباتاتي', scan: 'فحص', discover: 'استكشف', ai: 'المساعد' },
-        greeting: 'أهلاً بك، ليلى', weather: '24°م • رطوبة 48% • القاهرة',
-        quick: { identify: 'تعرّف', doctor: 'طبيب النبات', ask: 'اسأل الخبير' },
-        todaysCare: 'مهام العناية اليوم', viewSchedule: 'الجدول الكامل',
-        tipLabel: 'نصيحة نباتية يومية',
-        tipText: 'امسح الغبار عن الأوراق العريضة بقطعة قماش رطبة لمساعدة نباتاتك على امتصاص ضوء أكثر بنسبة 30%.',
-        savedPlants: 'مجموعتك المحفوظة',
-        scanTitle: 'الماسح الذكي للنباتات', modeId: 'تعرّف', modeDoc: 'طبيب النبات',
-        frameHint: 'ضع الورقة أو الزهرة في منتصف الإطار',
-        uploadPhoto: 'رفع صورة', liveCam: 'كاميرا حية', stopCam: 'إغلاق الكاميرا', trySample: 'فحص تجريبي',
-        scanning: 'جاري تحليل عروق وشكل الورقة...', matchFound: 'تطابق بنسبة 98%', viewDetails: 'عرض دليل العناية الكامل',
-        sun: 'الإضاءة', water: 'الري', soil: 'التربة', temp: 'الحرارة',
-        careInst: 'تعليمات العناية', addToMy: '+ أضف إلى نباتاتي', savedBadge: 'محفوظة في نباتاتي ✓',
-        chooseRoom: 'اختر مكان النبتة في منزلك',
-        docPrompt: 'ارفع صورة واضحة للورقة المصابة أو افتح الكاميرا لتشخيص المشكلة وعلاجها فوراً.',
-        symptoms: ['اصفرار الأوراق', 'بقع بنية', 'ذبول', 'بودرة بيضاء'],
-        runDiag: 'تشخيص الحالة الآن', diagResult: 'تقرير التشخيص',
-        issueName: 'إفراط خفيف في الري وبداية تبقع', severity: 'يحتاج عناية متوسطة',
-        treatment: 'خطة العلاج خطوة بخطوة',
-        steps: [
-          'قص الأوراق السفلية شديدة الاصفرار بمقص نظيف ومعقّم.',
-          'توقف عن الري لمدة 5 أيام حتى تجف أول 4 سم من التربة.',
-          'انقل النبات لمكان بإضاءة ساطعة غير مباشرة مع تهوية جيدة.'
-        ],
-        askDocAI: 'ناقش النتيجة مع المساعد الذكي',
-        aiTitle: 'خبير PlantUp الذكي', aiSub: 'نشط • خبير ثنائي اللغة',
-        aiPrompts: ['لماذا تصفر أوراق نباتي؟', 'أفضل نباتات للإضاءة الضعيفة؟', 'كيف أكثر نبتة البوتس؟'],
-        aiPlaceholder: 'اسأل أي سؤال عن نباتاتك...',
-        myJungle: 'نباتاتي', colTab: 'المجموعة', careTab: 'جدول العناية',
-        searchPlants: 'ابحث في نباتاتك...', rooms: ['الكل', 'غرفة المعيشة', 'البلكونة', 'غرفة النوم'],
-        tasksDone: 'مهام مكتملة اليوم', waterAction: 'ري 250 مل', fertAction: 'تسميد سائل', pruneAction: 'رش وتقليم',
-        discoverTitle: 'استكشف', searchDiscover: 'ابحث عن نباتات وأدلة زراعية...',
-        cats: ['الكل', 'للمبتدئين', 'إضاءة منخفضة', 'آمنة للحيوانات', 'صباريات سهلة'],
-        featuredTag: 'دليل الموسم', featuredTitle: 'أفضل النباتات المنقية لهواء المنزل الحديث',
-        popularPlants: 'تصفح النباتات', tipsGuides: 'أدلة العناية السريعة',
-        tip1Title: 'الفرق بين زيادة الري وقلة الري: كيف تميزهما؟',
-        tip1Body: 'الأوراق الزائدة في الري تصبح طرية ومصفرة من القاعدة، بينما الأوراق العطشى تكون جافة ومقرمشة وتلتف للداخل. افحص عمق 3 سم من التربة بإصبعك قبل كل رية!',
-        tip2Title: 'دليل نقل النبات لأصيص أكبر في 3 دقائق',
-        tip2Body: 'اختر أصيصاً أوسع بـ 2 إلى 4 سم فقط من الحالي مع فتحات تصريف سفلية، فكك الجذور برفق وضع تربة جديدة مهوّاة ثم اسقه برفق.',
-        proTitle: 'اعتنِ بنباتاتك بذكاء مع PlantUp Pro',
-        proSub: 'افتح فحوصات لا محدودة، تشخيص الأمراض، وتنبيهات الطقس الذكية.',
-        proPerks: ['تعرّف لا محدود على النباتات بالذكاء الاصطناعي', 'تشخيص فوري لأمراض النباتات وخطط العلاج', 'محادثة مفتوحة 24/7 مع خبير البستنة الذكي', 'تذكيرات ري ذكية تتكيف مع حالة الطقس'],
-        annual: 'الخطة السنوية', annualPrice: '$83.99 / سنة', annualNote: 'حوالي $6.99 شهرياً • تُدفع سنوياً', bestValue: 'أفضل قيمة • وفّر 30%',
-        monthly: 'الخطة الشهرية', monthlyPrice: '$9.99 / شهر', monthlyNote: 'اشتراك شهري مرن',
-        startTrial: 'ابدأ تجربة مجانية 7 أيام', proActive: 'اشتراك Pro مفعّل ✓',
-        profileTitle: 'الملف الشخصي والإعدادات', freeMember: 'عضو مجاني', proMember: 'عضو PlantUp Pro', upgradeNow: 'ترقية',
-        prefs: 'التفضيلات', langLabel: 'اللغة (عربي / English)', unitsLabel: 'وحدة الحرارة',
-        notifs: 'الإشعارات', careRem: 'تذكيرات العناية', weatherRem: 'تنبيهات الطقس',
-        replayOnboard: 'إعادة عرض شاشات الترحيب', resetDemo: 'إعادة ضبط البيانات التجريبية',
-        toastAdded: 'تمت الإضافة إلى نباتاتي 🌿', toastPro: 'أهلاً بك في PlantUp Pro! ✨', toastDone: 'أحسنت! تم إكمال المهمة 💧', toastReset: 'تمت إعادة ضبط التطبيق'
-      }
-    };
-
-    // Pl@ntNet API: browser-side key is for local testing only. Move to a backend before publishing.
-    // Local testing only: enter your own Pl@ntNet key when prompted.
-    // Do not publish a browser-side API key in a public app.
+    /* ---------- Pl@ntNet ---------- */
+    // Local testing only: do not publish a browser-side API key in a public app (use a backend proxy).
     function getPlantNetApiKey() {
       let key = '';
       try { key = localStorage.getItem('plantup_plantnet_key') || ''; } catch (e) {}
       if (!key) {
-        key = window.prompt(state.lang === 'ar'
-          ? 'أدخل مفتاح Pl@ntNet API للاختبار (سيُحفظ على هذا الجهاز فقط):'
-          : 'Enter your Pl@ntNet API key for testing (saved on this device only):') || '';
-        key = key.trim();
-        if (key) {
-          try { localStorage.setItem('plantup_plantnet_key', key); } catch (e) {}
-        }
+        key = (window.prompt(state.lang === 'ar'
+          ? 'أدخل مفتاح Pl@ntNet API (سيُحفظ على هذا الجهاز فقط):'
+          : 'Enter your Pl@ntNet API key (saved on this device only):') || '').trim();
+        if (key) { try { localStorage.setItem('plantup_plantnet_key', key); } catch (e) {} }
       }
       return key;
     }
     const PLANTNET_API_URL = 'https://my-api.plantnet.org/v2/identify/all';
 
+    /* ---------- State ---------- */
+    const STORE_KEY = 'plantup_v4_state';
     const DEFAULT_STATE = {
-      lang: 'ar',
-      onboarded: false,
-      onboardSlide: 0,
-      screen: 'home',
-      prevScreen: 'home',
-      selectedPlantId: 'monstera',
-      scanMode: 'identify',
-      scanning: false,
-      scanImg: null,
-      scanFound: null,
-      scanApiResult: null,
-      scanError: null,
-      docSymptoms: ['Yellow Leaves'],
-      docDiagnosed: false,
-      roomFilter: 0,
-      myViewMode: 'grid',
-      plantsSubTab: 'collection',
-      discoverCat: 0,
-      selectedDay: 2,
-      isPro: false,
-      selectedPlan: 'annual',
-      units: 'C',
-      notifCare: true,
-      notifWeather: true,
-      myPlants: [
-        { id: 'monstera', roomIdx: 1, health: 'healthy', nextEn: 'Water in 2 days', nextAr: 'الري بعد يومين' },
-        { id: 'pothos', roomIdx: 3, health: 'healthy', nextEn: 'Water in 5 days', nextAr: 'الري بعد 5 أيام' },
-        { id: 'fern', roomIdx: 2, health: 'attention', nextEn: 'Water today', nextAr: 'الري اليوم' }
-      ],
-      tasks: [
-        { id: 1, plantId: 'fern', type: 'water', done: false },
-        { id: 2, plantId: 'monstera', type: 'prune', done: true },
-        { id: 3, plantId: 'pothos', type: 'fertilize', done: false }
-      ],
-      messages: [
-        {
-          sender: 'ai',
-          en: 'Hello Layla! 🌿 I am your PlantUp AI Botanist. Ask me anything about watering, sunlight, yellow leaves, or propagation!',
-          ar: 'أهلاً ليلى! 🌿 أنا خبير PlantUp الذكي. اسأليني عن الري، الإضاءة، اصفرار الأوراق، أو إكثار النباتات!'
-        }
-      ]
+      lang: 'ar', onboarded: false, onboardSlide: 0,
+      screen: 'home', prevScreen: 'home',
+      scanMode: 'identify', scanning: false, scanImg: null, scanError: null,
+      docSymptoms: ['Yellow Leaves'], docDiagnosed: false,
+      roomFilter: 0, myViewMode: 'grid', plantsSubTab: 'collection',
+      isPro: false, selectedPlan: 'annual', notifCare: true, notifWeather: true,
+      plants: [],      // saved plants (created only by scanning / Discover)
+      messages: []
     };
-
-    function cloneDefault() {
-      return JSON.parse(JSON.stringify(DEFAULT_STATE));
-    }
-
+    function cloneDefault() { return JSON.parse(JSON.stringify(DEFAULT_STATE)); }
     function loadState() {
       try {
-        const raw = localStorage.getItem('plantup_v3_state');
+        const raw = localStorage.getItem(STORE_KEY);
         if (!raw) return cloneDefault();
-        return Object.assign(cloneDefault(), JSON.parse(raw), { scanning: false, scanImg: null });
-      } catch (e) {
-        return cloneDefault();
-      }
+        const s = Object.assign(cloneDefault(), JSON.parse(raw), { scanning: false, scanImg: null, scanError: null });
+        if (s.screen === 'details') s.screen = 'home';
+        return s;
+      } catch (e) { return cloneDefault(); }
     }
-
     let state = loadState();
-    let liveStream = null;
-    let activeModal = null;
-    let aiTyping = false;
-    let toastTimer = null;
+    let liveStream = null, activeModal = null, aiTyping = false, toastTimer = null;
+    let scanResult = null;       // { plant, score, alts, saved, existed, remaining, low }
+    let viewing = null;          // plant object shown in details
+    let scanStatus = '';
+    let discover = { q: '', loading: false, results: null, error: '' };
 
     function saveState() {
-      try {
-        const toSave = Object.assign({}, state, { scanning: false, scanImg: null });
-        localStorage.setItem('plantup_v3_state', JSON.stringify(toSave));
-      } catch (e) {}
+      try { localStorage.setItem(STORE_KEY, JSON.stringify(Object.assign({}, state, { scanning: false, scanImg: null, scanError: null }))); } catch (e) {}
     }
-
     function t() { return T[state.lang]; }
-    function esc(s) { return String(s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+    function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+    function slug(s) { return String(s).toLowerCase().replace(/[^a-z0-9\u0600-\u06ff]+/g, '-').replace(/^-+|-+$/g, '') || ('p' + Date.now()); }
+    function pname(p) { return state.lang === 'ar' ? (p.nameAr || p.nameEn || p.sci) : (p.nameEn || p.nameAr || p.sci); }
+    function pdesc(p) { return state.lang === 'ar' ? (p.descAr || p.descEn || '') : (p.descEn || p.descAr || ''); }
 
+    /* ---------- Helpers ---------- */
     function triggerBurst(x, y, emoji) {
-      const layer = document.getElementById('burst-layer');
-      if (!layer) return;
-      const cx = x || window.innerWidth / 2;
-      const cy = y || window.innerHeight / 2;
+      const layer = document.getElementById('burst-layer'); if (!layer) return;
+      const cx = x || window.innerWidth / 2, cy = y || window.innerHeight / 2;
       const items = [emoji || '🌿', '💧', '✨', '🌱', '🍃'];
       for (let i = 0; i < 8; i++) {
         const el = document.createElement('span');
-        el.className = 'burst-item';
-        el.textContent = items[i % items.length];
-        el.style.left = cx + 'px';
-        el.style.top = cy + 'px';
+        el.className = 'burst-item'; el.textContent = items[i % items.length];
+        el.style.left = cx + 'px'; el.style.top = cy + 'px';
         el.style.setProperty('--tx', (Math.random() * 140 - 70) + 'px');
         el.style.setProperty('--ty', (Math.random() * -110 - 20) + 'px');
-        layer.appendChild(el);
-        setTimeout(function() { el.remove(); }, 900);
+        layer.appendChild(el); setTimeout(function () { el.remove(); }, 900);
       }
     }
-
     function showToast(msg) {
-      const existing = document.getElementById('toast-el');
-      if (existing) existing.remove();
-      const el = document.createElement('div');
-      el.id = 'toast-el';
-      el.className = 'toast';
-      el.textContent = msg;
-      document.body.appendChild(el);
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(function() { el.remove(); }, 2200);
+      const existing = document.getElementById('toast-el'); if (existing) existing.remove();
+      const el = document.createElement('div'); el.id = 'toast-el'; el.className = 'toast'; el.textContent = msg;
+      document.body.appendChild(el); clearTimeout(toastTimer); toastTimer = setTimeout(function () { el.remove(); }, 2400);
     }
-
-    function stopCamera() {
-      if (liveStream) {
-        liveStream.getTracks().forEach(function(tr) { tr.stop(); });
-        liveStream = null;
-      }
-    }
+    function stopCamera() { if (liveStream) { liveStream.getTracks().forEach(function (tr) { tr.stop(); }); liveStream = null; } }
 
     async function toggleLiveCamera() {
-      if (liveStream) {
-        stopCamera();
-        render();
-        return;
-      }
-      if (!window.isSecureContext) {
-        showToast(state.lang === 'ar' ? 'الكاميرا تحتاج فتح الموقع عبر HTTPS أو localhost، وليس ملف HTML مباشرة' : 'Camera requires HTTPS or localhost; opening the HTML file directly will block it');
-        return;
-      }
-      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        showToast(state.lang === 'ar' ? 'المتصفح لا يدعم تشغيل الكاميرا. افتح الصفحة في Chrome.' : 'Camera API unavailable. Open this page in Chrome.');
-        return;
-      }
+      if (liveStream) { stopCamera(); render(); return; }
+      if (!window.isSecureContext) { showToast(state.lang === 'ar' ? 'الكاميرا تحتاج HTTPS أو localhost' : 'Camera requires HTTPS or localhost'); return; }
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { showToast('Camera API unavailable'); return; }
       try {
         liveStream = await navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: { ideal: 'environment' } } });
         render();
         const vid = document.getElementById('live-video');
-        if (vid) {
-          vid.srcObject = liveStream;
-          await vid.play().catch(function(){});
-        }
-      } catch (e) {
-        console.error('PlantUp camera error:', e);
-        const reason = e && e.name ? e.name : 'Camera permission/device error';
-        showToast((state.lang === 'ar' ? 'تعذر فتح الكاميرا: ' : 'Could not open camera: ') + reason);
-      }
+        if (vid) { vid.srcObject = liveStream; await vid.play().catch(function () {}); }
+      } catch (e) { showToast((state.lang === 'ar' ? 'تعذر فتح الكاميرا: ' : 'Camera error: ') + (e && e.name ? e.name : '')); }
     }
 
     function setLang(lang) {
-      state.lang = lang;
-      document.documentElement.lang = lang;
-      document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-      saveState();
-      render();
+      state.lang = lang; saveState(); render();
     }
-
     function go(screen, extra) {
       if (screen !== 'identify' && screen !== 'doctor') stopCamera();
-      if (screen !== state.screen && ['details','premium','profile'].indexOf(state.screen) === -1) {
-        state.prevScreen = state.screen;
-      }
+      if (screen !== state.screen && ['details', 'premium', 'profile'].indexOf(state.screen) === -1) state.prevScreen = state.screen;
       if (extra) Object.assign(state, extra);
-      state.screen = screen;
-      saveState();
-      render();
-      window.scrollTo(0, 0);
+      state.screen = screen; saveState(); render(); window.scrollTo(0, 0);
     }
-
     function openPlant(id) {
-      state.selectedPlantId = id;
-      go('details');
+      const p = state.plants.find(function (x) { return x.id === id; });
+      if (!p) return;
+      viewing = p; go('details');
+    }
+    function openTransient(idx) {            // plant from Discover results (not saved yet)
+      viewing = discover.results[idx]; go('details');
+    }
+    function openScanResultPlant() { if (scanResult) { viewing = scanResult.plant; go('details'); } }
+
+    /* ---------- Plant model ---------- */
+    function daysLeft(p) {
+      const every = p.waterEvery || 7;
+      return Math.ceil(every - (Date.now() - (p.lastWatered || p.addedAt || Date.now())) / 86400000);
+    }
+    function nextText(p) {
+      const d = daysLeft(p);
+      if (d < 0) return t().overdue(-d);
+      if (d === 0) return t().waterToday;
+      if (d === 1) return t().waterTomorrow;
+      return t().waterIn(d);
+    }
+    function savePlant(plant, roomIdx) {
+      const existing = state.plants.find(function (x) { return x.id === plant.id; });
+      if (existing) { if (roomIdx) existing.roomIdx = roomIdx; saveState(); return existing; }
+      const rec = Object.assign({}, plant, { roomIdx: roomIdx || 1, waterEvery: plant.waterEvery || 7, lastWatered: Date.now(), addedAt: Date.now() });
+      state.plants.unshift(rec); saveState(); return rec;
+    }
+    function chooseRoom(roomIdx, e) {
+      if (!viewing) return;
+      const saved = state.plants.find(function (x) { return x.id === viewing.id; });
+      if (saved) { saved.roomIdx = roomIdx; saveState(); }
+      else { viewing = savePlant(viewing, roomIdx); if (e) triggerBurst(e.clientX, e.clientY, '🪴'); showToast(t().toastAdded); }
+      if (scanResult && scanResult.plant.id === viewing.id) { scanResult.saved = true; }
+      activeModal = null; render();
+    }
+    function setWaterEvery(id, delta) {
+      const p = state.plants.find(function (x) { return x.id === id; }); if (!p) return;
+      p.waterEvery = Math.min(60, Math.max(1, (p.waterEvery || 7) + delta)); saveState(); render();
+    }
+    function waterPlant(id, e) {
+      const p = state.plants.find(function (x) { return x.id === id; }); if (!p) return;
+      p.lastWatered = Date.now(); saveState();
+      if (e) triggerBurst(e.clientX, e.clientY, '💧');
+      showToast(t().toastWatered); render();
+    }
+    function removePlant(id) {
+      state.plants = state.plants.filter(function (x) { return x.id !== id; });
+      if (scanResult && scanResult.plant.id === id) scanResult.saved = false;
+      saveState(); showToast(t().toastRemoved); viewing = null; go(state.prevScreen && state.prevScreen !== 'details' ? state.prevScreen : 'home');
+    }
+    function saveScanResult(e) {
+      if (!scanResult) return;
+      savePlant(scanResult.plant, 1); scanResult.saved = true;
+      if (e) triggerBurst(e.clientX, e.clientY, '🪴'); showToast(t().toastAdded); render();
     }
 
-    function addPlantToRoom(id, roomIdx, e) {
-      const exists = state.myPlants.find(function(p) { return p.id === id; });
-      if (!exists) {
-        state.myPlants.unshift({ id: id, roomIdx: roomIdx, health: 'healthy', nextEn: 'Water in 5 days', nextAr: 'الري بعد 5 أيام' });
-      } else {
-        exists.roomIdx = roomIdx;
+    /* ---------- Web data: Wikipedia ---------- */
+    function bigThumb(url) { return url ? url.replace(/\/\d+px-/, '/640px-') : ''; }
+    async function wikiSummary(lg, title) {
+      try {
+        const r = await fetch('https://' + lg + '.wikipedia.org/api/rest_v1/page/summary/' + encodeURIComponent(String(title).replace(/ /g, '_')) + '?redirect=true');
+        if (!r.ok) return null;
+        const d = await r.json();
+        if (d.type === 'disambiguation' || !d.extract) return null;
+        return d;
+      } catch (e) { return null; }
+    }
+    async function wikiInfo(sci) {
+      const res = await Promise.all([wikiSummary('en', sci), wikiSummary('ar', sci)]);
+      return { en: res[0], ar: res[1] };
+    }
+    function wikiImage(d) {
+      if (!d) return '';
+      if (d.thumbnail && d.thumbnail.source) return bigThumb(d.thumbnail.source);
+      if (d.originalimage && d.originalimage.source) return d.originalimage.source;
+      return '';
+    }
+
+    /* ---------- Scan / identify ---------- */
+    function handleScanFile(e, target) {
+      const file = e.target.files && e.target.files[0]; if (!file) return;
+      stopCamera(); state.scanError = null; state.scanImg = URL.createObjectURL(file);
+      if (target === 'identify') { render(); identifyPlant(file); } else { runDoctorDemo(); }
+      e.target.value = '';
+    }
+    function captureAndIdentify() {
+      const video = document.getElementById('live-video');
+      if (!liveStream || !video || !video.videoWidth) { showToast(state.lang === 'ar' ? 'افتح الكاميرا أولاً وانتظر ظهور الصورة' : 'Start the camera first'); return; }
+      const canvas = document.createElement('canvas');
+      canvas.width = video.videoWidth; canvas.height = video.videoHeight;
+      canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+      canvas.toBlob(function (blob) {
+        if (!blob) { showToast('Capture failed'); return; }
+        state.scanImg = canvas.toDataURL('image/jpeg', 0.9);
+        const f = new File([blob], 'plantup-scan.jpg', { type: 'image/jpeg' });
+        stopCamera(); identifyPlant(f);
+      }, 'image/jpeg', 0.9);
+    }
+
+    async function identifyPlant(file) {
+      state.scanError = null; scanResult = null;
+      if (!file || !file.type || file.type.indexOf('image/') !== 0) {
+        state.scanError = state.lang === 'ar' ? 'الملف المختار ليس صورة.' : 'The selected file is not an image.'; render(); return;
       }
-      activeModal = null;
-      saveState();
-      if (e) triggerBurst(e.clientX, e.clientY, '🪴');
-      showToast(t().toastAdded);
+      state.scanning = true; scanStatus = t().identifying; render();
+      try {
+        let uploadFile = file;
+        if (file.type !== 'image/jpeg' && file.type !== 'image/png') {
+          const bitmap = await createImageBitmap(file);
+          const canvas = document.createElement('canvas');
+          canvas.width = bitmap.width; canvas.height = bitmap.height;
+          canvas.getContext('2d').drawImage(bitmap, 0, 0);
+          const blob = await new Promise(function (res) { canvas.toBlob(res, 'image/jpeg', 0.9); });
+          if (!blob) throw new Error('Could not convert this image. Try JPG or PNG.');
+          uploadFile = new File([blob], 'plantup-photo.jpg', { type: 'image/jpeg' });
+        }
+        const apiKey = getPlantNetApiKey();
+        if (!apiKey) throw new Error(state.lang === 'ar' ? 'لم يتم إدخال مفتاح Pl@ntNet API.' : 'No Pl@ntNet API key entered.');
+        const form = new FormData();
+        form.append('images', uploadFile, uploadFile.name || 'plant.jpg');
+        form.append('organs', 'auto');
+        const url = PLANTNET_API_URL + '?lang=' + (state.lang === 'ar' ? 'ar' : 'en') + '&nb-results=5&include-related-images=true&api-key=' + encodeURIComponent(apiKey);
+        const response = await fetch(url, { method: 'POST', body: form });
+        const data = await response.json().catch(function () { return {}; });
+        if (!response.ok) throw new Error((data.message || data.error || ('HTTP ' + response.status)) + ' (status ' + response.status + ')');
+
+        const top = data.results && data.results[0];
+        if (!top || !top.species) { showToast(t().noMatch); return; }
+
+        scanStatus = t().fetching; render();
+        const sp = top.species;
+        const sci = sp.scientificNameWithoutAuthor || sp.scientificName || 'Unknown';
+        const common = sp.commonNames || [];
+        const wiki = await wikiInfo(sci);
+        const pnImg = top.images && top.images[0] && top.images[0].url ? (top.images[0].url.m || top.images[0].url.o || '') : '';
+        const img = wikiImage(wiki.en) || wikiImage(wiki.ar) || pnImg;
+
+        const plant = {
+          id: slug(sci), sci: sci,
+          nameEn: (state.lang === 'en' && common[0]) || (wiki.en && wiki.en.title) || sci,
+          nameAr: (state.lang === 'ar' && common[0]) || (wiki.ar && wiki.ar.title) || '',
+          commonNames: common.slice(0, 4),
+          img: img,
+          descEn: wiki.en ? wiki.en.extract : '', descAr: wiki.ar ? wiki.ar.extract : '',
+          wikiUrl: (wiki.en && wiki.en.content_urls && wiki.en.content_urls.desktop.page) || (wiki.ar && wiki.ar.content_urls && wiki.ar.content_urls.desktop.page) || ''
+        };
+        const score = top.score || 0;
+        const existed = !!state.plants.find(function (x) { return x.id === plant.id; });
+        const low = score < 0.15;
+        let saved = existed;
+        if (!existed && !low) { savePlant(plant, 1); saved = true; }
+        scanResult = {
+          plant: existed ? state.plants.find(function (x) { return x.id === plant.id; }) : plant,
+          score: score, existed: existed, saved: saved, low: low && !existed,
+          alts: (data.results || []).slice(1, 4).map(function (r) { return { sci: r.species && (r.species.scientificNameWithoutAuthor || r.species.scientificName), score: r.score || 0 }; }),
+          remaining: data.remainingIdentificationRequests
+        };
+        triggerBurst(null, 240, '🌿');
+      } catch (error) {
+        const msg = String(error && error.message || error);
+        state.scanError = msg.indexOf('Failed to fetch') >= 0
+          ? (state.lang === 'ar' ? 'تعذر الاتصال بخدمة Pl@ntNet (إنترنت أو CORS). جرّب فتح الصفحة من HTTPS.' : 'Could not reach Pl@ntNet (network or CORS). Try an HTTPS-hosted page.')
+          : msg;
+      } finally { state.scanning = false; scanStatus = ''; render(); }
+    }
+
+    /* ---------- Discover (live Wikipedia search) ---------- */
+    async function runDiscover(q) {
+      q = String(q || '').trim(); if (!q) return;
+      discover.q = q; discover.loading = true; discover.error = ''; render();
+      const lg = state.lang === 'ar' ? 'ar' : 'en';
+      const term = q + (lg === 'ar' ? ' نبات' : ' plant');
+      const url = 'https://' + lg + '.wikipedia.org/w/api.php?action=query&format=json&origin=*&generator=search&gsrlimit=10&gsrsearch=' + encodeURIComponent(term) +
+        '&prop=pageimages|extracts&piprop=thumbnail&pithumbsize=600&exintro=1&explaintext=1&exsentences=3&exlimit=max';
+      try {
+        const r = await fetch(url); const d = await r.json();
+        const pages = d.query && d.query.pages ? Object.keys(d.query.pages).map(function (k) { return d.query.pages[k]; }) : [];
+        pages.sort(function (a, b) { return (a.index || 0) - (b.index || 0); });
+        discover.results = pages.filter(function (pg) { return pg.thumbnail && pg.extract; }).map(function (pg) {
+          const p = { id: slug(pg.title), sci: pg.title, nameEn: lg === 'en' ? pg.title : '', nameAr: lg === 'ar' ? pg.title : '',
+            img: pg.thumbnail.source, descEn: lg === 'en' ? pg.extract : '', descAr: lg === 'ar' ? pg.extract : '',
+            wikiUrl: 'https://' + lg + '.wikipedia.org/?curid=' + pg.pageid };
+          return p;
+        });
+      } catch (e) { discover.error = state.lang === 'ar' ? 'تعذر البحث. تأكد من الإنترنت.' : 'Search failed. Check your connection.'; discover.results = []; }
+      discover.loading = false; render();
+    }
+
+    /* ---------- Doctor demo / AI chat ---------- */
+    function toggleSymptom(key) {
+      const i = state.docSymptoms.indexOf(key);
+      if (i > -1) state.docSymptoms.splice(i, 1); else state.docSymptoms.push(key);
       render();
     }
-
-    function toggleTask(id, e) {
-      const task = state.tasks.find(function(x) { return x.id === id; });
-      if (task) {
-        task.done = !task.done;
-        saveState();
-        if (task.done) {
-          if (e) triggerBurst(e.clientX, e.clientY, '💧');
-          showToast(t().toastDone);
+    function runDoctorDemo() {
+      state.scanning = true; state.docDiagnosed = false; scanStatus = t().identifying; render();
+      setTimeout(function () { state.scanning = false; state.docDiagnosed = true; scanStatus = ''; triggerBurst(null, 240, '✨'); render(); }, 1200);
+    }
+    function askAIWithContext() {
+      state.messages.push({ sender: 'ai', en: 'I reviewed your Plant Doctor report (' + T.en.issueName + '). Hold off watering for 5 days and keep good airflow!', ar: 'اطّلعت على تقرير طبيب النبات (' + T.ar.issueName + '). وقف الري 5 أيام مع تهوية جيدة!' });
+      saveState(); go('ai');
+    }
+    function sendChat(text) {
+      const q = String(text).trim(); if (!q) return;
+      state.messages.push({ sender: 'user', custom: q }); aiTyping = true; render();
+      window.scrollTo(0, document.body.scrollHeight);
+      setTimeout(function () {
+        aiTyping = false;
+        const lower = q.toLowerCase();
+        let en = 'Great question! Most houseplants thrive in bright indirect light. Always test the top 3cm of soil with your finger before watering.';
+        let ar = 'سؤال ممتاز! معظم النباتات المنزلية تفضل الإضاءة الساطعة غير المباشرة. اختبر دائماً جفاف أول 3 سم من التربة بإصبعك قبل الري.';
+        if (lower.indexOf('yellow') > -1 || q.indexOf('اصفر') > -1 || q.indexOf('تصفر') > -1) {
+          en = 'Yellowing leaves most often point to overwatering or clogged pot drainage. Let the soil dry out slightly and empty any excess water.';
+          ar = 'اصفرار الأوراق يشير غالباً إلى زيادة الري أو انسداد فتحات التصريف. اترك التربة تجف قليلاً وتخلّص من الماء الزائد.';
+        } else if (lower.indexOf('low') > -1 || q.indexOf('ضعيفة') > -1 || q.indexOf('قليلة') > -1) {
+          en = 'Golden Pothos, Snake Plant, and ZZ Plant are top champions for low-light rooms!';
+          ar = 'نبتة البوتس الذهبية، جلد النمر، ونبتة الزاميا هي الأفضل للغرف ذات الإضاءة الضعيفة!';
+        } else if (lower.indexOf('propagat') > -1 || q.indexOf('اكثار') > -1 || q.indexOf('إكثار') > -1 || q.indexOf('أكثر') > -1) {
+          en = 'To propagate Pothos: snip just below a node, place in clean water near bright light, and roots will sprout within 2 weeks!';
+          ar = 'لإكثار البوتس: قص غصناً أسفل العقدة مباشرة، وضعه في ماء نظيف بمكان مضيء وستظهر الجذور خلال أسبوعين!';
         }
-        render();
-      }
+        state.messages.push({ sender: 'ai', en: en, ar: ar }); saveState(); render();
+        window.scrollTo(0, document.body.scrollHeight);
+      }, 700);
     }
 
     function nextOnboard() {
-      if (state.onboardSlide < 2) {
-        state.onboardSlide++;
-        render();
-      } else {
-        state.onboarded = true;
-        saveState();
-        render();
-      }
+      if (state.onboardSlide < 2) { state.onboardSlide++; render(); }
+      else { state.onboarded = true; saveState(); render(); }
+    }
+    function resetAll() {
+      try { localStorage.removeItem(STORE_KEY); } catch (e) {}
+      state = cloneDefault(); scanResult = null; viewing = null; discover = { q: '', loading: false, results: null, error: '' };
+      setLang(state.lang); showToast(t().toastReset);
     }
 
-    function toggleSymptom(key) {
-      const idx = state.docSymptoms.indexOf(key);
-      if (idx > -1) state.docSymptoms.splice(idx, 1);
-      else state.docSymptoms.push(key);
-      render();
+    /* ---------- Screens ---------- */
+    function emptyState() {
+      return '<div class="empty card mt-16"><div class="big">🪴</div><h3 class="mt-8">' + t().emptyTitle + '</h3><p class="mt-8">' + t().emptyDesc + '</p>' +
+        '<button class="btn-primary mt-16" onclick="go(\'identify\')">' + icons.camera + '<span>' + t().scanNow + '</span></button></div>';
     }
 
     function renderOnboarding() {
       const s = t().slides[state.onboardSlide];
-      return '<div class="screen-content full-screen">' +
-        '<div class="onboard-wrap">' +
-          '<div class="row between">' +
-            '<button class="chip active" onclick="setLang(\'' + (state.lang === 'ar' ? 'en' : 'ar') + '\')">' + (state.lang === 'ar' ? 'English' : 'العربية') + '</button>' +
-            '<button style="font-weight:600; color:var(--muted); font-size:0.88rem;" onclick="state.onboarded=true; saveState(); render();">' + t().skip + '</button>' +
-          '</div>' +
-          '<div class="anim-pop">' +
-            '<div class="onboard-hero">' +
-              '<img src="' + ONBOARD_IMGS[state.onboardSlide] + '" alt="PlantUp" onerror="this.style.display=\'none\';"/>' +
-              '<span class="onboard-float-tag anim-float">' + s.tag + '</span>' +
-            '</div>' +
-            '<h1 style="text-align:center;">' + s.title + '</h1>' +
-            '<p style="text-align:center; margin-top:10px; padding:0 8px;">' + s.desc + '</p>' +
-            '<div class="dots">' +
-              [0,1,2].map(function(i){ return '<span class="dot ' + (state.onboardSlide === i ? 'active' : '') + '"></span>'; }).join('') +
-            '</div>' +
-          '</div>' +
-          '<button class="btn-primary" onclick="nextOnboard()">' + (state.onboardSlide < 2 ? t().next : t().getStarted) + '</button>' +
+      return '<div class="screen-content full-screen"><div class="onboard-wrap">' +
+        '<div class="row between">' +
+          '<button class="chip active" onclick="setLang(\'' + (state.lang === 'ar' ? 'en' : 'ar') + '\')">' + (state.lang === 'ar' ? 'English' : 'العربية') + '</button>' +
+          '<button style="font-weight:600; color:var(--muted); font-size:.88rem;" onclick="state.onboarded=true; saveState(); render();">' + t().skip + '</button>' +
         '</div>' +
-      '</div>';
+        '<div class="anim-pop"><div class="onboard-hero"><img src="' + ONBOARD_IMGS[state.onboardSlide] + '" alt="PlantUp" onerror="this.style.display=\'none\';"/>' +
+          '<span class="onboard-float-tag anim-float">' + s.tag + '</span></div>' +
+          '<h1 style="text-align:center;">' + s.title + '</h1>' +
+          '<p style="text-align:center; margin-top:10px; padding:0 8px;">' + s.desc + '</p>' +
+          '<div class="dots">' + [0, 1, 2].map(function (i) { return '<span class="dot ' + (state.onboardSlide === i ? 'active' : '') + '"></span>'; }).join('') + '</div></div>' +
+        '<button class="btn-primary" onclick="nextOnboard()">' + (state.onboardSlide < 2 ? t().next : t().getStarted) + '</button>' +
+      '</div></div>';
     }
 
     function renderHome() {
-      const ar = state.lang === 'ar';
+      const due = state.plants.filter(function (p) { return daysLeft(p) <= 0; });
       return '<div class="screen-content">' +
-        '<div class="row between">' +
-          '<div><h1>' + t().greeting + '</h1><span class="pill mt-8">' + t().weather + '</span></div>' +
+        '<div class="row between"><h1>' + t().greeting + '</h1>' +
           '<div class="row gap-8">' +
-            '<button class="icon-btn" style="background:' + (state.isPro ? 'var(--mint)' : 'var(--white)') + '; color:var(--forest);" onclick="go(\'premium\')">' + icons.crown + '</button>' +
+            '<button class="icon-btn" style="color:var(--forest);" onclick="go(\'premium\')">' + icons.crown + '</button>' +
             '<button class="icon-btn" style="background:var(--forest); color:var(--white);" onclick="go(\'profile\')">' + icons.user + '</button>' +
-          '</div>' +
-        '</div>' +
-
+          '</div></div>' +
         '<div class="quick-grid mt-20">' +
           '<button class="quick-card anim-pop" onclick="state.scanMode=\'identify\'; go(\'identify\')">' + icons.camera + '<span>' + t().quick.identify + '</span></button>' +
           '<button class="quick-card anim-pop" onclick="state.scanMode=\'doctor\'; go(\'doctor\')">' + icons.doctor + '<span>' + t().quick.doctor + '</span></button>' +
           '<button class="quick-card anim-pop" onclick="go(\'ai\')">' + icons.sparkle + '<span>' + t().quick.ask + '</span></button>' +
         '</div>' +
-
-        '<div class="row between mt-20">' +
-          '<h2>' + t().todaysCare + '</h2>' +
-          '<button style="color:var(--forest); font-weight:700; font-size:0.84rem;" onclick="state.plantsSubTab=\'care\'; go(\'myplants\')">' + t().viewSchedule + '</button>' +
-        '</div>' +
-
-        '<div class="card mt-12" style="display:flex; flex-direction:column; gap:12px;">' +
-          state.tasks.map(function(task) {
-            const p = PLANTS_DB.find(function(x){ return x.id === task.plantId; }) || PLANTS_DB[0];
-            const action = task.type === 'water' ? t().waterAction : task.type === 'fertilize' ? t().fertAction : t().pruneAction;
-            return '<div class="row between">' +
-              '<div class="row gap-12" onclick="openPlant(\'' + p.id + '\')" style="cursor:pointer;">' +
-                plantPhoto(p, 'width:48px; height:48px; flex-shrink:0;') +
-                '<div>' +
-                  '<h3 style="' + (task.done ? 'text-decoration:line-through; opacity:0.55;' : '') + '">' + (ar ? p.nameAr : p.nameEn) + '</h3>' +
-                  '<p style="font-size:0.78rem;">' + action + '</p>' +
-                '</div>' +
-              '</div>' +
-              '<button class="task-check ' + (task.done ? 'done' : '') + '" onclick="toggleTask(' + task.id + ', event)">' + (task.done ? icons.check : '') + '</button>' +
-            '</div>';
-          }).join('') +
-        '</div>' +
-
-        '<div class="card mt-16" style="background:var(--mint); box-shadow:none;">' +
-          '<span class="pill" style="background:var(--white);">' + t().tipLabel + '</span>' +
-          '<p style="color:var(--forest); font-weight:500; margin-top:8px;">' + t().tipText + '</p>' +
-        '</div>' +
-
-        '<div class="row between mt-20"><h2>' + t().savedPlants + '</h2><span class="pill">' + state.myPlants.length + '</span></div>' +
-        '<div class="plant-grid mt-12">' +
-          state.myPlants.slice(0, 4).map(function(mp) {
-            const p = PLANTS_DB.find(function(x){ return x.id === mp.id; }) || PLANTS_DB[0];
-            return '<div class="card card-interactive anim-pop" style="padding:10px; cursor:pointer;" onclick="openPlant(\'' + p.id + '\')">' +
-              plantPhoto(p, 'height:122px;') +
-              '<h3 class="mt-8">' + (ar ? p.nameAr : p.nameEn) + '</h3>' +
-              '<p style="font-size:0.74rem; color:var(--forest); font-weight:600;">' + (ar ? mp.nextAr : mp.nextEn) + '</p>' +
-            '</div>';
-          }).join('') +
-        '</div>' +
+        '<div class="row between mt-20"><h2>' + t().todaysCare + '</h2>' +
+          '<button style="color:var(--forest); font-weight:700; font-size:.84rem;" onclick="state.plantsSubTab=\'care\'; go(\'myplants\')">' + t().viewSchedule + '</button></div>' +
+        (state.plants.length === 0 ? emptyState() :
+          '<div class="card mt-12" style="display:flex; flex-direction:column; gap:12px;">' +
+            (due.length === 0 ? '<p style="color:var(--forest); font-weight:600;">' + t().allCaught + '</p>' :
+              due.map(function (p) {
+                return '<div class="row between">' +
+                  '<div class="row gap-12" onclick="openPlant(\'' + p.id + '\')" style="cursor:pointer;">' + plantPhoto(p, 'width:48px; height:48px; flex-shrink:0;') +
+                    '<div><h3>' + esc(pname(p)) + '</h3><p style="font-size:.78rem;">' + nextText(p) + '</p></div></div>' +
+                  '<button class="task-check" onclick="waterPlant(\'' + p.id + '\', event)" aria-label="water">' + icons.drop + '</button></div>';
+              }).join('')) +
+          '</div>') +
+        '<div class="card mt-16" style="background:var(--mint); box-shadow:none;"><span class="pill" style="background:var(--white);">' + t().tipLabel + '</span>' +
+          '<p style="color:var(--forest); font-weight:500; margin-top:8px;">' + t().tipText + '</p></div>' +
+        (state.plants.length ? '<div class="row between mt-20"><h2>' + t().savedPlants + '</h2><span class="pill">' + state.plants.length + '</span></div>' +
+          '<div class="plant-grid mt-12">' + state.plants.slice(0, 4).map(function (p) {
+            return '<div class="card card-interactive anim-pop" style="padding:10px; cursor:pointer;" onclick="openPlant(\'' + p.id + '\')">' + plantPhoto(p, 'height:122px;') +
+              '<h3 class="mt-8">' + esc(pname(p)) + '</h3><p style="font-size:.74rem; color:var(--forest); font-weight:600;">' + nextText(p) + '</p></div>';
+          }).join('') + '</div>' : '') +
       '</div>';
     }
 
+    function renderScanResult() {
+      if (!scanResult) return '';
+      const r = scanResult, p = r.plant;
+      return '<div class="card anim-pop mt-16" style="border:2px solid var(--light);">' +
+        '<div class="row between"><span class="pill fresh">' + t().matchFound + ' • ' + Math.round(r.score * 100) + '%</span>' +
+          (r.saved ? '<span class="pill">' + (r.existed ? t().alreadySaved : t().autoSaved) + ' ✓</span>' : '') + '</div>' +
+        '<div class="row gap-12 mt-12">' + plantPhoto(p, 'width:84px; height:84px; flex-shrink:0;') +
+          '<div style="flex:1; min-width:0;"><h3>' + esc(pname(p)) + '</h3><p style="font-size:.78rem; font-style:italic;">' + esc(p.sci) + '</p>' +
+          (p.commonNames && p.commonNames.length ? '<p style="font-size:.74rem;" class="mt-8">' + t().commonNames + ': ' + esc(p.commonNames.join('، ')) + '</p>' : '') + '</div></div>' +
+        (pdesc(p) ? '<p class="mt-12 clamp">' + esc(pdesc(p)) + '</p>' : '') +
+        (r.low && !r.saved ? '<p class="mt-8" style="color:#B26A00; font-weight:600;">' + t().lowConf + '</p>' : '') +
+        (!r.saved ? '<button class="btn-primary mt-12" onclick="saveScanResult(event)">' + t().saveIt + '</button>' : '') +
+        '<button class="btn-secondary mt-8" onclick="openScanResultPlant()">' + t().viewDetails + '</button>' +
+        (r.alts.length ? '<h3 class="mt-16">' + t().alsoPossible + '</h3>' + r.alts.map(function (a) { return '<div class="scan-result-item"><p>' + esc(a.sci || '—') + ' — ' + Math.round(a.score * 100) + '%</p></div>'; }).join('') : '') +
+        '<p class="mt-8" style="font-size:.72rem;">' + t().remaining + ': ' + esc(r.remaining == null ? '—' : r.remaining) + '</p></div>';
+    }
+
     function renderIdentify() {
-      const ar = state.lang === 'ar';
-      const found = state.scanFound ? PLANTS_DB.find(function(x){ return x.id === state.scanFound; }) : null;
-      const apiResult = state.scanApiResult;
-      const topSpecies = apiResult && apiResult.results && apiResult.results[0] ? apiResult.results[0] : null;
       return '<div class="screen-content">' +
-        '<div class="row between">' +
-          '<h2>' + t().scanTitle + '</h2>' +
+        '<div class="row between"><h2>' + t().scanTitle + '</h2>' +
           '<div class="mode-switch" style="width:190px;">' +
-            '<button class="mode-btn ' + (state.scanMode === 'identify' ? 'active' : '') + '" onclick="state.scanMode=\'identify\'; render()">' + t().modeId + '</button>' +
-            '<button class="mode-btn ' + (state.scanMode === 'doctor' ? 'active' : '') + '" onclick="go(\'doctor\')">' + t().modeDoc + '</button>' +
-          '</div>' +
-        '</div>' +
-
+            '<button class="mode-btn active">' + t().modeId + '</button>' +
+            '<button class="mode-btn" onclick="go(\'doctor\')">' + t().modeDoc + '</button></div></div>' +
         '<div class="scanner-box mt-16">' +
-          (liveStream ? '<video id="live-video" class="scanner-media" autoplay playsinline muted></video>'
-            : (state.scanImg ? '<img class="scanner-media" src="' + state.scanImg + '" alt="Scan"/>' : '<img class="scanner-media" style="opacity:0.35" src="' + PLANTS_DB[0].img + '" alt=""/>')) +
-          '<div class="scanner-frame">' +
-            (state.scanning ? '<div class="scan-line"></div>' : '') +
-            icons.camera +
-            '<span style="font-size:0.82rem; font-weight:600;">' + (state.scanning ? t().scanning : t().frameHint) + '</span>' +
-          '</div>' +
-        '</div>' +
-
+          (liveStream ? '<video id="live-video" class="scanner-media" autoplay playsinline muted></video>' : (state.scanImg ? '<img class="scanner-media" src="' + state.scanImg + '" alt="Scan"/>' : '')) +
+          '<div class="scanner-frame">' + (state.scanning ? '<div class="scan-line"></div>' : '') + icons.camera +
+            '<span style="font-size:.82rem; font-weight:600;">' + (state.scanning ? esc(scanStatus) : t().frameHint) + '</span></div></div>' +
         '<div class="row gap-8 mt-16">' +
           '<label class="btn-secondary" style="cursor:pointer; flex:1;">' + icons.upload + '<span>' + t().uploadPhoto + '</span>' +
-            '<input type="file" accept="image/*" capture="environment" style="display:none;" onchange="handleScanFile(event, \'identify\')" />' +
-          '</label>' +
-          '<button class="btn-secondary" style="flex:1;" onclick="toggleLiveCamera()">' + icons.camera + '<span>' + (liveStream ? t().stopCam : t().liveCam) + '</span></button>' +
-        '</div>' +
-        '<button class="btn-primary mt-8" onclick="captureAndIdentify()" ' + (!liveStream || state.scanning ? 'disabled style="opacity:.55;"' : '') + '>' + (ar ? 'التقط الصورة وتعرّف على النبات' : 'Capture & Identify Plant') + '</button>' +
-
-        (state.scanError ? '<div class="card anim-pop mt-16" style="border:1px solid #dc7777;"><strong>' + (ar ? 'تعذر إتمام الفحص' : 'Scan could not be completed') + '</strong><p class="mt-8" style="overflow-wrap:anywhere;">' + esc(state.scanError) + '</p></div>' : '') +
-
-        (apiResult ? '<div class="card anim-pop mt-16" style="border:2px solid var(--light);">' +
-          '<span class="pill fresh">' + (ar ? 'نتيجة تعرف حقيقية من Pl@ntNet' : 'Real Pl@ntNet identification') + '</span>' +
-          (topSpecies ? '<h3 class="mt-12">' + esc(topSpecies.species && topSpecies.species.scientificName ? topSpecies.species.scientificName : apiResult.bestMatch || 'Unknown species') + '</h3>' +
-            '<p class="mt-8">' + (ar ? 'الأسماء الشائعة: ' : 'Common names: ') + esc((topSpecies.species && topSpecies.species.commonNames && topSpecies.species.commonNames.length) ? topSpecies.species.commonNames.slice(0,4).join('، ') : (ar ? 'غير متاحة' : 'Not provided')) + '</p>' +
-            '<p class="mt-8"><strong>' + (ar ? 'درجة الثقة: ' : 'Confidence: ') + Math.round((topSpecies.score || 0) * 100) + '%</strong></p>' : '<p class="mt-8">' + (ar ? 'لم يتم العثور على تطابق واضح.' : 'No confident match was found.') + '</p>') +
-          (apiResult.results || []).slice(0,3).map(function(item, index) { return '<div class="scan-result-item"><p><strong>' + (index+1) + '. ' + esc(item.species && item.species.scientificName ? item.species.scientificName : 'Unknown') + '</strong> — ' + Math.round((item.score || 0)*100) + '%</p></div>'; }).join('') +
-          '<p class="mt-8" style="font-size:.72rem;">' + (ar ? 'الطلبات المتبقية اليوم: ' : 'Remaining requests today: ') + esc(String(apiResult.remainingIdentificationRequests == null ? '—' : apiResult.remainingIdentificationRequests)) + '</p>' +
-        '</div>' : '') +
-
-        (found && !apiResult ? '<div class="card anim-pop mt-16" style="border:2px solid var(--light);">' +
-          '<span class="pill fresh">' + t().matchFound + '</span>' +
-          '<div class="row gap-12 mt-12">' + plantPhoto(found, 'width:74px; height:74px; flex-shrink:0;') +
-            '<div style="flex:1;"><h3>' + (ar ? found.nameAr : found.nameEn) + '</h3><p style="font-size:0.78rem; font-style:italic;">' + found.sci + '</p></div>' +
-          '</div><button class="btn-primary mt-12" onclick="openPlant(\'' + found.id + '\')">' + t().viewDetails + '</button></div>' : '') +
+            '<input type="file" accept="image/*" capture="environment" style="display:none;" onchange="handleScanFile(event, \'identify\')" /></label>' +
+          '<button class="btn-secondary" style="flex:1;" onclick="toggleLiveCamera()">' + icons.camera + '<span>' + (liveStream ? t().stopCam : t().liveCam) + '</span></button></div>' +
+        '<button class="btn-primary mt-8" onclick="captureAndIdentify()" ' + (!liveStream || state.scanning ? 'disabled' : '') + '>' + t().capture + '</button>' +
+        (state.scanning ? '<div class="spinner"></div>' : '') +
+        (state.scanError ? '<div class="card anim-pop mt-16" style="border:1px solid #dc7777;"><strong>' + t().scanFail + '</strong><p class="mt-8" style="overflow-wrap:anywhere;">' + esc(state.scanError) + '</p></div>' : '') +
+        renderScanResult() +
       '</div>';
     }
 
     function renderDetails() {
-      const ar = state.lang === 'ar';
-      const p = PLANTS_DB.find(function(x){ return x.id === state.selectedPlantId; }) || PLANTS_DB[0];
-      const saved = state.myPlants.find(function(x){ return x.id === p.id; });
+      const p = viewing;
+      const saved = state.plants.find(function (x) { return x.id === p.id; });
+      const cur = saved || p;
+      const d = pdesc(cur);
       return '<div class="screen-content no-pad">' +
-        '<div style="height:280px; position:relative;">' +
-          plantPhoto(p, 'height:100%; border-radius:0;') +
-          '<button class="icon-btn" style="position:absolute; top:16px; inset-inline-start:16px; background:rgba(255,255,255,0.92);" onclick="go(state.prevScreen || \'home\')">' + icons.back + '</button>' +
-        '</div>' +
+        '<div style="height:280px; position:relative;">' + plantPhoto(cur, 'height:100%; border-radius:0;') +
+          '<button class="icon-btn" style="position:absolute; top:16px; inset-inline-start:16px; background:rgba(255,255,255,.92);" onclick="go(state.prevScreen || \'home\')">' + icons.back + '</button></div>' +
         '<div style="padding:22px 18px; background:var(--bg); border-radius:28px 28px 0 0; margin-top:-26px; position:relative;">' +
-          '<div class="row between">' +
-            '<div><h1>' + (ar ? p.nameAr : p.nameEn) + '</h1><p style="font-style:italic; font-size:0.82rem;">' + p.sci + '</p></div>' +
-            '<span class="pill">' + (ar ? p.catAr : p.cat) + '</span>' +
-          '</div>' +
-          '<p class="mt-12">' + (ar ? p.descAr : p.descEn) + '</p>' +
-          '<span class="pill warn mt-12">' + (ar ? p.petAr : p.petEn) + '</span>' +
-
-          '<div class="metrics-grid mt-16">' +
-            '<div class="metric-card"><div class="metric-icon">' + icons.sun + '</div><div><p style="font-size:0.72rem;">' + t().sun + '</p><h3>' + (ar ? p.sunAr : p.sunEn) + '</h3></div></div>' +
-            '<div class="metric-card"><div class="metric-icon">' + icons.drop + '</div><div><p style="font-size:0.72rem;">' + t().water + '</p><h3>' + (ar ? p.waterAr : p.waterEn) + '</h3></div></div>' +
-            '<div class="metric-card"><div class="metric-icon">' + icons.soil + '</div><div><p style="font-size:0.72rem;">' + t().soil + '</p><h3>' + (ar ? p.soilAr : p.soilEn) + '</h3></div></div>' +
-            '<div class="metric-card"><div class="metric-icon">' + icons.temp + '</div><div><p style="font-size:0.72rem;">' + t().temp + '</p><h3>' + (state.units === 'C' ? p.tempC : p.tempF) + '</h3></div></div>' +
-          '</div>' +
-
-          '<div class="card mt-16"><h3>' + t().careInst + '</h3><p class="mt-8">' + (ar ? p.careAr : p.careEn) + '</p></div>' +
-
-          '<button class="btn-primary mt-20" style="' + (saved ? 'background:var(--fresh);' : '') + '" onclick="activeModal={type:\'room\', plantId:\'' + p.id + '\'}; render();">' +
-            (saved ? (t().savedBadge + ' (' + t().rooms[saved.roomIdx] + ')') : t().addToMy) +
-          '</button>' +
-        '</div>' +
-      '</div>';
+          '<div class="row between"><div><h1>' + esc(pname(cur)) + '</h1><p style="font-style:italic; font-size:.82rem;">' + esc(cur.sci) + '</p></div>' +
+            (saved ? '<span class="pill fresh">' + t().savedBadge + ' ✓</span>' : '') + '</div>' +
+          '<div class="card mt-16"><h3>' + t().careInst + '</h3><p class="mt-8" style="color:var(--text);">' + (d ? esc(d) : t().noDesc) + '</p>' +
+            (cur.wikiUrl ? '<a class="mt-8" style="display:inline-block; font-size:.76rem; color:var(--forest); font-weight:600;" href="' + esc(cur.wikiUrl) + '" target="_blank" rel="noopener">' + t().source + '</a>' : '') + '</div>' +
+          (saved ?
+            '<div class="metrics-grid mt-16">' +
+              '<div class="metric-card"><div class="metric-icon">' + icons.room + '</div><div><p style="font-size:.72rem;">' + t().room + '</p><h3>' + t().rooms[saved.roomIdx] + '</h3></div></div>' +
+              '<div class="metric-card"><div class="metric-icon">' + icons.drop + '</div><div><p style="font-size:.72rem;">' + t().nextWater + '</p><h3>' + nextText(saved) + '</h3></div></div>' +
+            '</div>' +
+            '<div class="card mt-12 row between"><h3>' + t().waterEvery + '</h3><div class="stepper"><button onclick="setWaterEvery(\'' + saved.id + '\', -1)">−</button><strong>' + (saved.waterEvery || 7) + ' ' + t().days + '</strong><button onclick="setWaterEvery(\'' + saved.id + '\', 1)">+</button></div></div>' +
+            '<button class="btn-primary mt-16" onclick="waterPlant(\'' + saved.id + '\', event)">' + t().wateredNow + '</button>' +
+            '<button class="btn-secondary mt-8" onclick="activeModal={type:\'room\'}; render();">' + t().changeRoom + '</button>' +
+            '<button class="btn-secondary btn-danger mt-8" onclick="removePlant(\'' + saved.id + '\')">' + t().remove + '</button>'
+          :
+            '<button class="btn-primary mt-20" onclick="activeModal={type:\'room\'}; render();">' + t().addToMy + '</button>') +
+        '</div></div>';
     }
 
     function renderDoctor() {
       return '<div class="screen-content">' +
         '<div class="row gap-12"><button class="icon-btn" onclick="go(\'home\')">' + icons.back + '</button><h2>' + t().quick.doctor + '</h2></div>' +
         '<p class="mt-12">' + t().docPrompt + '</p>' +
-
         '<div class="scanner-box mt-12" style="height:220px;">' +
-          (liveStream ? '<video id="live-video" class="scanner-media" autoplay playsinline muted></video>'
-            : (state.scanImg ? '<img class="scanner-media" src="' + state.scanImg + '" alt=""/>' : '<img class="scanner-media" style="opacity:0.35" src="' + PLANTS_DB[2].img + '" alt=""/>')) +
-          '<div class="scanner-frame" style="width:170px; height:155px;">' +
-            (state.scanning ? '<div class="scan-line"></div>' : '') +
-            icons.doctor + '<span style="font-size:0.78rem;">' + (state.scanning ? t().scanning : t().uploadPhoto) + '</span>' +
-          '</div>' +
-        '</div>' +
-
-        '<div class="h-scroll mt-12">' +
-          t().symptoms.map(function(sym, i) {
-            const key = T.en.symptoms[i];
-            const act = state.docSymptoms.indexOf(key) > -1;
-            return '<button class="chip ' + (act ? 'active' : '') + '" onclick="toggleSymptom(\'' + key + '\')">' + sym + '</button>';
-          }).join('') +
-        '</div>' +
-
+          (state.scanImg ? '<img class="scanner-media" src="' + state.scanImg + '" alt=""/>' : '') +
+          '<div class="scanner-frame" style="width:170px; height:155px;">' + (state.scanning ? '<div class="scan-line"></div>' : '') + icons.doctor +
+            '<span style="font-size:.78rem;">' + (state.scanning ? esc(scanStatus) : t().uploadPhoto) + '</span></div></div>' +
+        '<div class="h-scroll mt-12">' + t().symptoms.map(function (sym, i) {
+          const key = T.en.symptoms[i]; const act = state.docSymptoms.indexOf(key) > -1;
+          return '<button class="chip ' + (act ? 'active' : '') + '" onclick="toggleSymptom(\'' + key + '\')">' + sym + '</button>';
+        }).join('') + '</div>' +
         '<div class="row gap-8 mt-16">' +
           '<label class="btn-secondary" style="cursor:pointer; flex:1;">' + icons.upload + '<span>' + t().uploadPhoto + '</span><input type="file" accept="image/*" style="display:none;" onchange="handleScanFile(event, \'doctor\')" /></label>' +
-          '<button class="btn-primary" style="flex:1;" onclick="runSampleScan(\'doctor\')">' + t().runDiag + '</button>' +
-        '</div>' +
-
-        (state.docDiagnosed ? '<div class="card anim-pop mt-16">' +
-          '<div class="row between"><h3>' + t().diagResult + '</h3><span class="pill warn">' + t().severity + '</span></div>' +
-          '<h2 class="mt-8" style="color:var(--forest);">' + t().issueName + '</h2>' +
-          '<h3 class="mt-16">' + t().treatment + '</h3>' +
-          '<div style="display:flex; flex-direction:column; gap:10px; margin-top:10px;">' +
-            t().steps.map(function(st, idx) {
-              return '<div class="row gap-12" style="align-items:flex-start;"><span class="pill" style="min-width:26px; justify-content:center;">' + (idx + 1) + '</span><p style="color:var(--text);">' + st + '</p></div>';
-            }).join('') +
-          '</div>' +
-          '<button class="btn-secondary mt-16" onclick="askAIWithContext()">' + t().askDocAI + '</button>' +
-        '</div>' : '') +
+          '<button class="btn-primary" style="flex:1;" onclick="runDoctorDemo()">' + t().runDiag + '</button></div>' +
+        (state.docDiagnosed ? '<div class="card anim-pop mt-16"><div class="row between"><h3>' + t().diagResult + '</h3><span class="pill warn">' + t().severity + '</span></div>' +
+          '<h2 class="mt-8" style="color:var(--forest);">' + t().issueName + '</h2><h3 class="mt-16">' + t().treatment + '</h3>' +
+          '<div style="display:flex; flex-direction:column; gap:10px; margin-top:10px;">' + t().steps.map(function (st, i) {
+            return '<div class="row gap-12" style="align-items:flex-start;"><span class="pill" style="min-width:26px; justify-content:center;">' + (i + 1) + '</span><p style="color:var(--text);">' + st + '</p></div>';
+          }).join('') + '</div><button class="btn-secondary mt-16" onclick="askAIWithContext()">' + t().askDocAI + '</button></div>' : '') +
       '</div>';
     }
 
     function renderAI() {
       const ar = state.lang === 'ar';
+      const msgs = state.messages.length ? state.messages : [{ sender: 'ai', en: T.en.aiHello, ar: T.ar.aiHello }];
       return '<div class="screen-content">' +
-        '<div class="card row gap-12" style="padding:12px 14px;">' +
-          '<div class="metric-icon" style="border-radius:50%; background:var(--forest); color:var(--white);">' + icons.plant + '</div>' +
-          '<div><h3>' + t().aiTitle + '</h3><p style="font-size:0.75rem; color:var(--fresh); font-weight:600;">' + t().aiSub + '</p></div>' +
-        '</div>' +
-        '<div class="h-scroll mt-12">' +
-          t().aiPrompts.map(function(q) {
-            return '<button class="chip" style="background:var(--mint); border-color:transparent; color:var(--forest);" onclick="sendChat(\'' + esc(q) + '\')">' + q + '</button>';
-          }).join('') +
-        '</div>' +
-        '<div class="chat-area mt-16">' +
-          state.messages.map(function(m) {
-            return '<div class="bubble ' + m.sender + '">' + (m.custom ? esc(m.custom) : (ar ? m.ar : m.en)) + '</div>';
-          }).join('') +
-          (aiTyping ? '<div class="bubble ai"><div class="typing-dots"><span></span><span></span><span></span></div></div>' : '') +
-        '</div>' +
-      '</div>' +
-      '<div class="chat-dock">' +
-        '<form class="chat-input-wrap" onsubmit="event.preventDefault(); var inp=document.getElementById(\'chat-inp\'); if(inp.value.trim()){ sendChat(inp.value); inp.value=\'\'; }">' +
-          '<input id="chat-inp" type="text" placeholder="' + t().aiPlaceholder + '" />' +
-          '<button type="submit" class="send-btn">' + icons.send + '</button>' +
-        '</form>' +
-      '</div>';
-    }
-
-    function renderMyPlants() {
-      const ar = state.lang === 'ar';
-      const doneCount = state.tasks.filter(function(x){ return x.done; }).length;
-      const pct = Math.round((doneCount / state.tasks.length) * 100);
-      return '<div class="screen-content">' +
-        '<div class="row between">' +
-          '<h1>' + t().myJungle + '</h1>' +
-          '<div class="row gap-8">' +
-            (state.plantsSubTab === 'collection' ? '<button class="icon-btn" onclick="state.myViewMode = state.myViewMode===\'grid\'?\'list\':\'grid\'; saveState(); render();">' + (state.myViewMode === 'grid' ? icons.list : icons.grid) + '</button>' : '') +
-            '<button class="icon-btn" style="background:var(--forest); color:var(--white);" onclick="go(\'profile\')">' + icons.user + '</button>' +
-          '</div>' +
-        '</div>' +
-        '<div class="mode-switch mt-16">' +
-          '<button class="mode-btn ' + (state.plantsSubTab === 'collection' ? 'active' : '') + '" onclick="state.plantsSubTab=\'collection\'; render()">' + t().colTab + '</button>' +
-          '<button class="mode-btn ' + (state.plantsSubTab === 'care' ? 'active' : '') + '" onclick="state.plantsSubTab=\'care\'; render()">' + t().careTab + '</button>' +
-        '</div>' +
-        (state.plantsSubTab === 'collection' ? (
-          '<div class="search-box mt-12">' + icons.search + '<input type="text" placeholder="' + t().searchPlants + '" oninput="filterMyPlants(this.value)" /></div>' +
-          '<div class="h-scroll mt-12">' + t().rooms.map(function(r, i){ return '<button class="chip ' + (state.roomFilter === i ? 'active' : '') + '" onclick="state.roomFilter=' + i + '; render()">' + r + '</button>'; }).join('') + '</div>' +
-          '<div class="' + (state.myViewMode === 'grid' ? 'plant-grid' : '') + ' mt-16" style="' + (state.myViewMode==='list'?'display:flex;flex-direction:column;gap:10px;':'') + '" id="my-plants-grid">' + buildMyPlantsGrid('') + '</div>'
-        ) : (
-          '<div class="cal-strip mt-16">' +
-            (ar ? ['ح','ن','ث','ر','خ','ج','س'] : ['S','M','T','W','T','F','S']).map(function(d, i) {
-              return '<button class="cal-day ' + (state.selectedDay === i ? 'active' : '') + '" onclick="state.selectedDay=' + i + '; render()"><span>' + d + '</span><strong>' + (13 + i) + '</strong>' + (i % 2 === 0 ? '<span class="cal-dot"></span>' : '') + '</button>';
-            }).join('') +
-          '</div>' +
-          '<div class="card mt-16" style="background:var(--mint); box-shadow:none;">' +
-            '<div class="row between"><strong style="font-size:0.85rem; color:var(--forest);">' + doneCount + '/' + state.tasks.length + ' ' + t().tasksDone + '</strong><strong style="font-size:0.85rem; color:var(--forest);">' + pct + '%</strong></div>' +
-            '<div style="height:8px; background:var(--white); border-radius:99px; margin-top:8px; overflow:hidden;"><div style="width:' + pct + '%; height:100%; background:var(--fresh); border-radius:99px; transition:width 0.35s ease;"></div></div>' +
-          '</div>' +
-          '<div style="display:flex; flex-direction:column; gap:10px;" class="mt-16">' +
-            state.tasks.map(function(task) {
-              const p = PLANTS_DB.find(function(x){ return x.id === task.plantId; }) || PLANTS_DB[0];
-              const action = task.type === 'water' ? t().waterAction : task.type === 'fertilize' ? t().fertAction : t().pruneAction;
-              return '<div class="card row between">' +
-                '<div class="row gap-12">' + plantPhoto(p, 'width:50px; height:50px; flex-shrink:0;') +
-                  '<div><h3 style="' + (task.done ? 'text-decoration:line-through; opacity:0.5;' : '') + '">' + (ar ? p.nameAr : p.nameEn) + '</h3><span class="pill ' + (task.type==='water'?'fresh':'') + '" style="margin-top:4px; font-size:0.72rem;">' + action + '</span></div>' +
-                '</div>' +
-                '<button class="task-check ' + (task.done ? 'done' : '') + '" onclick="toggleTask(' + task.id + ', event)">' + (task.done ? icons.check : '') + '</button>' +
-              '</div>';
-            }).join('') +
-          '</div>'
-        )) +
-      '</div>';
+        '<div class="card row gap-12" style="padding:12px 14px;"><div class="metric-icon" style="border-radius:50%; background:var(--forest); color:var(--white);">' + icons.plant + '</div>' +
+          '<div><h3>' + t().aiTitle + '</h3><p style="font-size:.75rem; color:var(--fresh); font-weight:600;">' + t().aiSub + '</p></div></div>' +
+        '<div class="h-scroll mt-12">' + t().aiPrompts.map(function (q) {
+          return '<button class="chip" style="background:var(--mint); border-color:transparent; color:var(--forest);" onclick="sendChat(this.textContent)">' + esc(q) + '</button>';
+        }).join('') + '</div>' +
+        '<div class="chat-area mt-16">' + msgs.map(function (m) {
+          return '<div class="bubble ' + m.sender + '">' + (m.custom ? esc(m.custom) : esc(ar ? m.ar : m.en)) + '</div>';
+        }).join('') + (aiTyping ? '<div class="bubble ai"><div class="typing-dots"><span></span><span></span><span></span></div></div>' : '') + '</div></div>' +
+        '<div class="chat-dock"><form class="chat-input-wrap" onsubmit="event.preventDefault(); var inp=document.getElementById(\'chat-inp\'); if(inp.value.trim()){ sendChat(inp.value); inp.value=\'\'; }">' +
+          '<input id="chat-inp" type="text" placeholder="' + t().aiPlaceholder + '" /><button type="submit" class="send-btn">' + icons.send + '</button></form></div>';
     }
 
     function buildMyPlantsGrid(query) {
-      const ar = state.lang === 'ar';
-      const q = query.trim().toLowerCase();
-      return state.myPlants
-        .filter(function(mp){ return state.roomFilter === 0 || mp.roomIdx === state.roomFilter; })
-        .filter(function(mp){
-          const p = PLANTS_DB.find(function(x){ return x.id === mp.id; });
-          return p && (!q || p.nameEn.toLowerCase().indexOf(q) > -1 || p.nameAr.indexOf(q) > -1);
-        })
-        .map(function(mp) {
-          const p = PLANTS_DB.find(function(x){ return x.id === mp.id; });
-          if (state.myViewMode === 'list') {
-            return '<div class="card card-interactive row between" style="cursor:pointer;" onclick="openPlant(\'' + p.id + '\')">' +
-              '<div class="row gap-12">' + plantPhoto(p, 'width:62px; height:62px; flex-shrink:0;') +
-              '<div><h3>' + (ar ? p.nameAr : p.nameEn) + '</h3><p style="font-size:0.76rem;">' + t().rooms[mp.roomIdx] + '</p></div></div>' +
-              '<span class="pill" style="font-size:0.72rem;">' + (ar ? mp.nextAr : mp.nextEn) + '</span></div>';
-          }
-          return '<div class="card card-interactive anim-pop" style="padding:10px; cursor:pointer;" onclick="openPlant(\'' + p.id + '\')">' +
-            '<div style="position:relative;">' + plantPhoto(p, 'height:128px;') +
-            '<span style="position:absolute; top:8px; inset-inline-end:8px; width:11px; height:11px; border-radius:50%; background:' + (mp.health==='healthy'?'var(--fresh)':'var(--warn)') + '; border:2px solid var(--white);"></span></div>' +
-            '<h3 class="mt-8">' + (ar ? p.nameAr : p.nameEn) + '</h3>' +
-            '<p style="font-size:0.74rem;">' + t().rooms[mp.roomIdx] + '</p>' +
-            '<span class="pill mt-8" style="font-size:0.7rem;">' + (ar ? mp.nextAr : mp.nextEn) + '</span></div>';
-        }).join('');
+      const q = String(query || '').trim().toLowerCase();
+      const list = state.plants
+        .filter(function (p) { return state.roomFilter === 0 || p.roomIdx === state.roomFilter; })
+        .filter(function (p) { return !q || (p.nameEn || '').toLowerCase().indexOf(q) > -1 || (p.nameAr || '').indexOf(q) > -1 || (p.sci || '').toLowerCase().indexOf(q) > -1; });
+      if (!list.length) return '<p style="grid-column:1/-1; text-align:center;">—</p>';
+      return list.map(function (p) {
+        if (state.myViewMode === 'list') {
+          return '<div class="card card-interactive row between" style="cursor:pointer;" onclick="openPlant(\'' + p.id + '\')">' +
+            '<div class="row gap-12">' + plantPhoto(p, 'width:62px; height:62px; flex-shrink:0;') +
+            '<div><h3>' + esc(pname(p)) + '</h3><p style="font-size:.76rem;">' + t().rooms[p.roomIdx] + '</p></div></div>' +
+            '<span class="pill" style="font-size:.72rem;">' + nextText(p) + '</span></div>';
+        }
+        return '<div class="card card-interactive anim-pop" style="padding:10px; cursor:pointer;" onclick="openPlant(\'' + p.id + '\')">' + plantPhoto(p, 'height:128px;') +
+          '<h3 class="mt-8">' + esc(pname(p)) + '</h3><p style="font-size:.74rem;">' + t().rooms[p.roomIdx] + '</p>' +
+          '<span class="pill mt-8" style="font-size:.7rem;">' + nextText(p) + '</span></div>';
+      }).join('');
     }
+    function filterMyPlants(val) { const el = document.getElementById('my-plants-grid'); if (el) el.innerHTML = buildMyPlantsGrid(val); }
 
-    function filterMyPlants(val) {
-      const el = document.getElementById('my-plants-grid');
-      if (el) el.innerHTML = buildMyPlantsGrid(val);
-    }
-
-    function renderDiscover() {
+    function renderMyPlants() {
+      const sorted = state.plants.slice().sort(function (a, b) { return daysLeft(a) - daysLeft(b); });
       return '<div class="screen-content">' +
-        '<h1>' + t().discoverTitle + '</h1>' +
-        '<div class="search-box mt-12">' + icons.search + '<input type="text" placeholder="' + t().searchDiscover + '" oninput="filterDiscover(this.value)" /></div>' +
-        '<div class="card mt-16" style="padding:0; overflow:hidden; position:relative; height:155px; background:var(--forest);">' +
-          '<img src="' + FEATURED_IMG + '" alt="Guide" style="width:100%; height:100%; object-fit:cover;" onerror="this.style.display=\'none\'"/>' +
-          '<div style="position:absolute; inset:0; background:linear-gradient(0deg, rgba(27,94,53,0.92), rgba(27,94,53,0.25)); padding:16px; display:flex; flex-direction:column; justify-content:flex-end;">' +
-            '<span class="pill" style="background:rgba(255,255,255,0.22); color:var(--white); width:fit-content;">' + t().featuredTag + '</span>' +
-            '<h2 style="color:var(--white); margin-top:6px;">' + t().featuredTitle + '</h2>' +
-          '</div>' +
-        '</div>' +
-        '<div class="h-scroll mt-16">' +
-          t().cats.map(function(c, idx){ return '<button class="chip ' + (state.discoverCat === idx ? 'active' : '') + '" onclick="state.discoverCat=' + idx + '; render()">' + c + '</button>'; }).join('') +
-        '</div>' +
-        '<h2 class="mt-16">' + t().popularPlants + '</h2>' +
-        '<div class="plant-grid mt-12" id="discover-grid">' + buildDiscoverGrid('') + '</div>' +
+        '<div class="row between"><h1>' + t().myJungle + '</h1><div class="row gap-8">' +
+          (state.plantsSubTab === 'collection' ? '<button class="icon-btn" onclick="state.myViewMode = state.myViewMode===\'grid\'?\'list\':\'grid\'; saveState(); render();">' + (state.myViewMode === 'grid' ? icons.list : icons.grid) + '</button>' : '') +
+          '<button class="icon-btn" style="background:var(--forest); color:var(--white);" onclick="go(\'profile\')">' + icons.user + '</button></div></div>' +
+        '<div class="mode-switch mt-16">' +
+          '<button class="mode-btn ' + (state.plantsSubTab === 'collection' ? 'active' : '') + '" onclick="state.plantsSubTab=\'collection\'; render()">' + t().colTab + '</button>' +
+          '<button class="mode-btn ' + (state.plantsSubTab === 'care' ? 'active' : '') + '" onclick="state.plantsSubTab=\'care\'; render()">' + t().careTab + '</button></div>' +
+        (state.plants.length === 0 ? emptyState() :
+          (state.plantsSubTab === 'collection' ?
+            '<div class="search-box mt-12">' + icons.search + '<input type="text" placeholder="' + t().searchPlants + '" oninput="filterMyPlants(this.value)" /></div>' +
+            '<div class="h-scroll mt-12">' + t().rooms.map(function (r, i) { return '<button class="chip ' + (state.roomFilter === i ? 'active' : '') + '" onclick="state.roomFilter=' + i + '; render()">' + r + '</button>'; }).join('') + '</div>' +
+            '<div class="' + (state.myViewMode === 'grid' ? 'plant-grid' : '') + ' mt-16" style="' + (state.myViewMode === 'list' ? 'display:flex;flex-direction:column;gap:10px;' : '') + '" id="my-plants-grid">' + buildMyPlantsGrid('') + '</div>'
+          :
+            '<div style="display:flex; flex-direction:column; gap:10px;" class="mt-16">' + sorted.map(function (p) {
+              const due = daysLeft(p) <= 0;
+              return '<div class="card row between"><div class="row gap-12" style="cursor:pointer;" onclick="openPlant(\'' + p.id + '\')">' + plantPhoto(p, 'width:50px; height:50px; flex-shrink:0;') +
+                '<div><h3>' + esc(pname(p)) + '</h3><span class="pill ' + (due ? 'warn' : 'fresh') + '" style="margin-top:4px; font-size:.72rem;">' + nextText(p) + '</span></div></div>' +
+                '<button class="task-check ' + (due ? '' : 'done') + '" onclick="waterPlant(\'' + p.id + '\', event)">' + (due ? icons.drop : icons.check) + '</button></div>';
+            }).join('') + '</div>')) +
+      '</div>';
+    }
+
+    function renderDiscoverResults() {
+      if (discover.loading) return '<div class="spinner"></div><p style="text-align:center;">' + t().searching + '</p>';
+      if (discover.error) return '<p class="mt-16" style="text-align:center;">' + esc(discover.error) + '</p>';
+      if (!discover.results) return '';
+      if (!discover.results.length) return '<p class="mt-16" style="text-align:center;">' + t().noResults + '</p>';
+      return '<div class="plant-grid mt-16">' + discover.results.map(function (p, i) {
+        return '<div class="card card-interactive anim-pop" style="padding:10px; cursor:pointer;" onclick="openTransient(' + i + ')">' + plantPhoto(p, 'height:125px;') +
+          '<h3 class="mt-8">' + esc(pname(p)) + '</h3></div>';
+      }).join('') + '</div>';
+    }
+    function renderDiscover() {
+      return '<div class="screen-content"><h1>' + t().discoverTitle + '</h1>' +
+        '<form class="search-box mt-12" onsubmit="event.preventDefault(); runDiscover(document.getElementById(\'disc-inp\').value);">' + icons.search +
+          '<input id="disc-inp" type="text" value="' + esc(discover.q) + '" placeholder="' + t().searchDiscover + '" /></form>' +
+        '<div class="h-scroll mt-12">' + t().suggest.map(function (s) { return '<button class="chip" onclick="runDiscover(this.textContent)">' + esc(s) + '</button>'; }).join('') + '</div>' +
+        renderDiscoverResults() +
         '<h2 class="mt-20">' + t().tipsGuides + '</h2>' +
         '<div class="card mt-12" style="display:flex; flex-direction:column; gap:12px;">' +
           '<div class="row between" onclick="activeModal={type:\'article\', idx:1}; render();" style="cursor:pointer;"><h3>' + t().tip1Title + '</h3><span class="pill">3 min</span></div>' +
           '<hr style="border:none; border-top:1px solid var(--border);" />' +
-          '<div class="row between" onclick="activeModal={type:\'article\', idx:2}; render();" style="cursor:pointer;"><h3>' + t().tip2Title + '</h3><span class="pill">3 min</span></div>' +
-        '</div>' +
-      '</div>';
-    }
-
-    function buildDiscoverGrid(query) {
-      const ar = state.lang === 'ar';
-      const q = query.trim().toLowerCase();
-      const catFilter = T.en.cats[state.discoverCat];
-      return PLANTS_DB
-        .filter(function(p){ return state.discoverCat === 0 || p.cat === catFilter; })
-        .filter(function(p){ return !q || p.nameEn.toLowerCase().indexOf(q) > -1 || p.nameAr.indexOf(q) > -1; })
-        .map(function(p) {
-          return '<div class="card card-interactive anim-pop" style="padding:10px; cursor:pointer;" onclick="openPlant(\'' + p.id + '\')">' +
-            plantPhoto(p, 'height:125px;') +
-            '<h3 class="mt-8">' + (ar ? p.nameAr : p.nameEn) + '</h3>' +
-            '<p style="font-size:0.74rem;">' + (ar ? p.catAr : p.cat) + '</p>' +
-          '</div>';
-        }).join('');
-    }
-
-    function filterDiscover(val) {
-      const el = document.getElementById('discover-grid');
-      if (el) el.innerHTML = buildDiscoverGrid(val);
+          '<div class="row between" onclick="activeModal={type:\'article\', idx:2}; render();" style="cursor:pointer;"><h3>' + t().tip2Title + '</h3><span class="pill">3 min</span></div></div></div>';
     }
 
     function renderPremium() {
       return '<div class="screen-content no-pad">' +
         '<div style="background:linear-gradient(150deg, var(--forest), var(--fresh)); color:var(--white); padding:22px 20px 30px; border-radius:0 0 28px 28px;">' +
-          '<button class="icon-btn" style="background:rgba(255,255,255,0.2); color:var(--white);" onclick="go(state.prevScreen || \'home\')">' + icons.back + '</button>' +
-          '<h1 style="color:var(--white); margin-top:16px;">' + t().proTitle + '</h1>' +
-          '<p style="color:rgba(255,255,255,0.9); margin-top:6px;">' + t().proSub + '</p>' +
-        '</div>' +
-        '<div style="padding:18px;">' +
-          '<div class="card" style="display:flex; flex-direction:column; gap:12px;">' +
-            t().proPerks.map(function(perk){ return '<div class="row gap-12"><span class="task-check done">' + icons.check + '</span><span style="font-size:0.88rem; font-weight:600;">' + perk + '</span></div>'; }).join('') +
-          '</div>' +
-          '<div class="plan-card mt-20 ' + (state.selectedPlan === 'annual' ? 'selected' : '') + '" onclick="state.selectedPlan=\'annual\'; render()" style="cursor:pointer;">' +
-            '<span class="best-badge">' + t().bestValue + '</span>' +
-            '<div class="row between"><div><h3>' + t().annual + '</h3><p style="font-size:0.76rem;">' + t().annualNote + '</p></div><strong style="font-size:1.1rem; color:var(--forest);">' + t().annualPrice + '</strong></div>' +
-          '</div>' +
+          '<button class="icon-btn" style="background:rgba(255,255,255,.2); color:var(--white);" onclick="go(state.prevScreen || \'home\')">' + icons.back + '</button>' +
+          '<h1 style="color:var(--white); margin-top:16px;">' + t().proTitle + '</h1><p style="color:rgba(255,255,255,.9); margin-top:6px;">' + t().proSub + '</p></div>' +
+        '<div style="padding:18px;"><div class="card" style="display:flex; flex-direction:column; gap:12px;">' +
+          t().proPerks.map(function (perk) { return '<div class="row gap-12"><span class="task-check done">' + icons.check + '</span><span style="font-size:.88rem; font-weight:600;">' + perk + '</span></div>'; }).join('') + '</div>' +
+          '<div class="plan-card mt-20 ' + (state.selectedPlan === 'annual' ? 'selected' : '') + '" onclick="state.selectedPlan=\'annual\'; render()" style="cursor:pointer;"><span class="best-badge">' + t().bestValue + '</span>' +
+            '<div class="row between"><div><h3>' + t().annual + '</h3><p style="font-size:.76rem;">' + t().annualNote + '</p></div><strong style="font-size:1.1rem; color:var(--forest);">' + t().annualPrice + '</strong></div></div>' +
           '<div class="plan-card mt-12 ' + (state.selectedPlan === 'monthly' ? 'selected' : '') + '" onclick="state.selectedPlan=\'monthly\'; render()" style="cursor:pointer;">' +
-            '<div class="row between"><div><h3>' + t().monthly + '</h3><p style="font-size:0.76rem;">' + t().monthlyNote + '</p></div><strong style="font-size:1.05rem;">' + t().monthlyPrice + '</strong></div>' +
-          '</div>' +
-          '<button class="btn-primary mt-20" onclick="state.isPro=true; saveState(); triggerBurst(null,null,\'✨\'); showToast(t().toastPro); go(\'home\')">' +
-            (state.isPro ? t().proActive : t().startTrial) +
-          '</button>' +
-        '</div>' +
-      '</div>';
+            '<div class="row between"><div><h3>' + t().monthly + '</h3><p style="font-size:.76rem;">' + t().monthlyNote + '</p></div><strong style="font-size:1.05rem;">' + t().monthlyPrice + '</strong></div></div>' +
+          '<button class="btn-primary mt-20" onclick="state.isPro=true; saveState(); triggerBurst(null,null,\'✨\'); showToast(t().toastPro); go(\'home\')">' + (state.isPro ? t().proActive : t().startTrial) + '</button></div></div>';
     }
 
     function renderProfile() {
       return '<div class="screen-content">' +
         '<div class="row gap-12"><button class="icon-btn" onclick="go(state.prevScreen || \'home\')">' + icons.back + '</button><h2>' + t().profileTitle + '</h2></div>' +
-        '<div class="card row between mt-16">' +
-          '<div class="row gap-12">' +
-            '<div class="metric-icon" style="width:52px; height:52px; border-radius:50%; background:var(--forest); color:var(--white);">' + icons.user + '</div>' +
-            '<div><h3>Layla Ahmed</h3><span class="pill ' + (state.isPro ? 'fresh' : '') + '" style="margin-top:4px;">' + (state.isPro ? t().proMember : t().freeMember) + '</span></div>' +
-          '</div>' +
-          (!state.isPro ? '<button class="chip active" onclick="go(\'premium\')">' + t().upgradeNow + '</button>' : '') +
-        '</div>' +
+        '<div class="card row between mt-16"><div class="row gap-12"><div class="metric-icon" style="width:52px; height:52px; border-radius:50%; background:var(--forest); color:var(--white);">' + icons.user + '</div>' +
+          '<div><span class="pill ' + (state.isPro ? 'fresh' : '') + '">' + (state.isPro ? t().proMember : t().freeMember) + '</span></div></div>' +
+          (!state.isPro ? '<button class="chip active" onclick="go(\'premium\')">' + t().upgradeNow + '</button>' : '') + '</div>' +
         '<h3 class="mt-20" style="color:var(--muted);">' + t().prefs + '</h3>' +
-        '<div class="card mt-8" style="display:flex; flex-direction:column; gap:14px;">' +
-          '<div class="row between"><span style="font-weight:600; font-size:0.9rem;">' + t().langLabel + '</span>' +
-            '<div class="mode-switch" style="width:140px;">' +
-              '<button class="mode-btn ' + (state.lang === 'ar' ? 'active' : '') + '" style="padding:6px;" onclick="setLang(\'ar\')">عربي</button>' +
-              '<button class="mode-btn ' + (state.lang === 'en' ? 'active' : '') + '" style="padding:6px;" onclick="setLang(\'en\')">EN</button>' +
-            '</div></div>' +
-          '<div class="row between"><span style="font-weight:600; font-size:0.9rem;">' + t().unitsLabel + '</span>' +
-            '<div class="mode-switch" style="width:110px;">' +
-              '<button class="mode-btn ' + (state.units === 'C' ? 'active' : '') + '" style="padding:6px;" onclick="state.units=\'C\'; saveState(); render()">°C</button>' +
-              '<button class="mode-btn ' + (state.units === 'F' ? 'active' : '') + '" style="padding:6px;" onclick="state.units=\'F\'; saveState(); render()">°F</button>' +
-            '</div></div>' +
-        '</div>' +
+        '<div class="card mt-8"><div class="row between"><span style="font-weight:600; font-size:.9rem;">' + t().langLabel + '</span><div class="mode-switch" style="width:140px;">' +
+          '<button class="mode-btn ' + (state.lang === 'ar' ? 'active' : '') + '" style="padding:6px;" onclick="setLang(\'ar\')">عربي</button>' +
+          '<button class="mode-btn ' + (state.lang === 'en' ? 'active' : '') + '" style="padding:6px;" onclick="setLang(\'en\')">EN</button></div></div></div>' +
         '<h3 class="mt-20" style="color:var(--muted);">' + t().notifs + '</h3>' +
         '<div class="card mt-8" style="display:flex; flex-direction:column; gap:14px;">' +
-          '<div class="row between"><span style="font-weight:600; font-size:0.9rem;">' + t().careRem + '</span><button class="switch ' + (state.notifCare ? 'on' : '') + '" onclick="state.notifCare=!state.notifCare; saveState(); render()"></button></div>' +
-          '<div class="row between"><span style="font-weight:600; font-size:0.9rem;">' + t().weatherRem + '</span><button class="switch ' + (state.notifWeather ? 'on' : '') + '" onclick="state.notifWeather=!state.notifWeather; saveState(); render()"></button></div>' +
-        '</div>' +
+          '<div class="row between"><span style="font-weight:600; font-size:.9rem;">' + t().careRem + '</span><button class="switch ' + (state.notifCare ? 'on' : '') + '" onclick="state.notifCare=!state.notifCare; saveState(); render()"></button></div>' +
+          '<div class="row between"><span style="font-weight:600; font-size:.9rem;">' + t().weatherRem + '</span><button class="switch ' + (state.notifWeather ? 'on' : '') + '" onclick="state.notifWeather=!state.notifWeather; saveState(); render()"></button></div></div>' +
         '<button class="btn-secondary mt-20" onclick="state.onboarded=false; state.onboardSlide=0; saveState(); render();">' + t().replayOnboard + '</button>' +
-        '<button class="btn-secondary mt-8" style="background:#FDECEC; color:#B71C1C;" onclick="resetAll()">' + t().resetDemo + '</button>' +
-      '</div>';
-    }
-
-    function resetAll() {
-      try { localStorage.removeItem('plantup_v3_state'); } catch (e) {}
-      state = cloneDefault();
-      setLang(state.lang);
-      showToast(t().toastReset);
+        '<button class="btn-secondary btn-danger mt-8" onclick="resetAll()">' + t().resetDemo + '</button></div>';
     }
 
     function renderModal() {
@@ -1306,213 +907,44 @@
       if (activeModal.type === 'article') {
         const title = activeModal.idx === 1 ? t().tip1Title : t().tip2Title;
         const body = activeModal.idx === 1 ? t().tip1Body : t().tip2Body;
-        return '<div class="modal-backdrop" onclick="if(event.target===this){activeModal=null; render();}">' +
-          '<div class="modal-sheet"><span class="pill">3 min read</span><h2 class="mt-12">' + title + '</h2><p class="mt-12" style="color:var(--text);">' + body + '</p><button class="btn-primary mt-20" onclick="activeModal=null; render();">OK</button></div></div>';
+        return '<div class="modal-backdrop" onclick="if(event.target===this){activeModal=null; render();}"><div class="modal-sheet"><span class="pill">3 min</span><h2 class="mt-12">' + title + '</h2><p class="mt-12" style="color:var(--text);">' + body + '</p><button class="btn-primary mt-20" onclick="activeModal=null; render();">OK</button></div></div>';
       }
       if (activeModal.type === 'room') {
-        return '<div class="modal-backdrop" onclick="if(event.target===this){activeModal=null; render();}">' +
-          '<div class="modal-sheet"><h2>' + t().chooseRoom + '</h2><div style="display:flex; flex-direction:column; gap:10px;" class="mt-16">' +
-            [1, 2, 3].map(function(rIdx){
-              return '<button class="btn-secondary" onclick="addPlantToRoom(\'' + activeModal.plantId + '\', ' + rIdx + ', event)">' + t().rooms[rIdx] + '</button>';
-            }).join('') +
-          '</div></div></div>';
+        return '<div class="modal-backdrop" onclick="if(event.target===this){activeModal=null; render();}"><div class="modal-sheet"><h2>' + t().chooseRoom + '</h2><div style="display:flex; flex-direction:column; gap:10px;" class="mt-16">' +
+          [1, 2, 3].map(function (r) { return '<button class="btn-secondary" onclick="chooseRoom(' + r + ', event)">' + t().rooms[r] + '</button>'; }).join('') + '</div></div></div>';
       }
       return '';
-    }
-
-    function handleScanFile(e, target) {
-      const file = e.target.files && e.target.files[0];
-      if (!file) return;
-      stopCamera();
-      state.scanError = null;
-      state.scanImg = URL.createObjectURL(file);
-      if (target === 'identify') {
-        render();
-        identifyPlant(file);
-      } else {
-        runSampleScan(target);
-      }
-      e.target.value = '';
-    }
-
-    function captureAndIdentify() {
-      const video = document.getElementById('live-video');
-      if (!liveStream || !video || !video.videoWidth) {
-        showToast(state.lang === 'ar' ? 'افتح الكاميرا أولاً وانتظر ظهور الصورة' : 'Start the camera and wait for the preview first');
-        return;
-      }
-      const canvas = document.createElement('canvas');
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-      canvas.toBlob(function(blob) {
-        if (!blob) {
-          showToast(state.lang === 'ar' ? 'تعذر التقاط الصورة' : 'Could not capture image');
-          return;
-        }
-        state.scanImg = canvas.toDataURL('image/jpeg', 0.9);
-        const imageFile = new File([blob], 'plantup-scan.jpg', { type: 'image/jpeg' });
-        stopCamera();
-        identifyPlant(imageFile);
-      }, 'image/jpeg', 0.9);
-    }
-
-    async function identifyPlant(file) {
-      state.scanError = null;
-      if (!file || !file.type || !file.type.startsWith('image/')) {
-        state.scanError = state.lang === 'ar' ? 'الملف المختار ليس صورة مدعومة. اختر صورة JPG أو PNG.' : 'The selected file is not a supported image. Choose JPG or PNG.';
-        render();
-        return;
-      }
-      state.scanning = true;
-      state.scanFound = null;
-      state.scanApiResult = null;
-      state.docDiagnosed = false;
-      render();
-      try {
-        // Convert browser-decodable formats (for example WEBP) to JPEG; Pl@ntNet accepts JPEG/PNG.
-        let uploadFile = file;
-        if (file.type !== 'image/jpeg' && file.type !== 'image/png') {
-          const bitmap = await createImageBitmap(file);
-          const canvas = document.createElement('canvas');
-          canvas.width = bitmap.width;
-          canvas.height = bitmap.height;
-          canvas.getContext('2d').drawImage(bitmap, 0, 0);
-          bitmap.close && bitmap.close();
-          const blob = await new Promise(function(resolve) { canvas.toBlob(resolve, 'image/jpeg', 0.9); });
-          if (!blob) throw new Error('Could not convert this image. Try JPG or PNG.');
-          uploadFile = new File([blob], 'plantup-photo.jpg', { type: 'image/jpeg' });
-        }
-        const apiKey = getPlantNetApiKey();
-        if (!apiKey) throw new Error(state.lang === 'ar'
-          ? 'لم يتم إدخال مفتاح Pl@ntNet API. أعد الفحص وأدخل المفتاح.'
-          : 'No Pl@ntNet API key was entered. Start the scan again and enter your key.');
-        const form = new FormData();
-        form.append('images', uploadFile, uploadFile.name || 'plant.jpg');
-        form.append('organs', 'auto');
-        const url = PLANTNET_API_URL + '?lang=' + (state.lang === 'ar' ? 'ar' : 'en') + '&nb-results=5&api-key=' + encodeURIComponent(apiKey);
-        const response = await fetch(url, { method: 'POST', body: form });
-        const data = await response.json().catch(function() { return {}; });
-        if (!response.ok) {
-          const detail = data.message || data.error || ('HTTP ' + response.status);
-          throw new Error(detail + ' (status ' + response.status + ')');
-        }
-        state.scanApiResult = data;
-        const scientific = data.results && data.results[0] && data.results[0].species ? data.results[0].species.scientificNameWithoutAuthor || data.results[0].species.scientificName : '';
-        const known = PLANTS_DB.find(function(p) { return p.sci.toLowerCase() === String(scientific).toLowerCase(); });
-        state.scanFound = known ? known.id : null;
-        if (!data.results || !data.results.length) showToast(state.lang === 'ar' ? 'لم يتم العثور على تطابق. جرّب صورة واضحة للورقة.' : 'No match found. Try a clear photo of the leaf.');
-        else triggerBurst(null, 240, '🌿');
-      } catch (error) {
-        console.error('Pl@ntNet identification error:', error);
-        const msg = String(error && error.message || error);
-        state.scanError = msg.indexOf('Failed to fetch') >= 0
-          ? (state.lang === 'ar' ? 'تعذر الاتصال بخدمة Pl@ntNet. قد يكون السبب اتصال الإنترنت أو منع المتصفح للطلب (CORS). جرّب فتح الصفحة من استضافة HTTPS.' : 'Could not reach Pl@ntNet. Check internet or browser CORS restrictions; try an HTTPS-hosted page.')
-          : msg;
-      } finally {
-        state.scanning = false;
-        render();
-      }
-    }
-
-    function runSampleScan(target) {
-      state.scanError = null;
-      state.scanning = true;
-      state.scanFound = null;
-      state.scanApiResult = null;
-      state.docDiagnosed = false;
-      render();
-      setTimeout(function() {
-        state.scanning = false;
-        if (target === 'identify') {
-          const idx = Math.floor(Math.random() * PLANTS_DB.length);
-          state.scanFound = PLANTS_DB[idx].id;
-        } else {
-          state.docDiagnosed = true;
-        }
-        triggerBurst(null, 240, '✨');
-        render();
-      }, 1200);
-    }
-
-    function askAIWithContext() {
-      state.messages.push({
-        sender: 'ai',
-        en: 'I reviewed your Plant Doctor report (' + T.en.issueName + '). Hold off watering for 5 days and keep good airflow!',
-        ar: 'اطّلعت على تقرير طبيب النبات (' + T.ar.issueName + '). توقفي عن الري لمدة 5 أيام مع تهوية جيدة!'
-      });
-      saveState();
-      go('ai');
-    }
-
-    function sendChat(text) {
-      const q = text.trim();
-      if (!q) return;
-      state.messages.push({ sender: 'user', custom: q });
-      aiTyping = true;
-      render();
-      window.scrollTo(0, document.body.scrollHeight);
-
-      setTimeout(function() {
-        aiTyping = false;
-        const lower = q.toLowerCase();
-        let replyEn = 'Great question! Most houseplants thrive in bright indirect light. Always test the top 3cm of soil with your finger before watering.';
-        let replyAr = 'سؤال ممتاز! معظم النباتات المنزلية تفضل الإضاءة الساطعة غير المباشرة. اختبر دائماً جفاف أول 3 سم من التربة بإصبعك قبل الري.';
-
-        if (lower.indexOf('yellow') > -1 || q.indexOf('اصفر') > -1 || q.indexOf('تصفر') > -1) {
-          replyEn = 'Yellowing leaves most often point to overwatering or clogged pot drainage. Let the soil dry out slightly and empty any excess water.';
-          replyAr = 'اصفرار الأوراق يشير غالباً إلى زيادة الري أو انسداد فتحات التصريف. اترك التربة تجف قليلاً وتخلّص من الماء الزائد في صحن الأصيص.';
-        } else if (lower.indexOf('low') > -1 || q.indexOf('ضعيفة') > -1 || q.indexOf('قليلة') > -1) {
-          replyEn = 'Golden Pothos, Snake Plant, and ZZ Plant are top champions for low-light rooms!';
-          replyAr = 'نبتة البوتس الذهبية، جلد النمر، ونبتة الزاميا هي الأفضل للغرف ذات الإضاءة الضعيفة!';
-        } else if (lower.indexOf('propagat') > -1 || q.indexOf('اكثار') > -1 || q.indexOf('إكثار') > -1 || q.indexOf('كثر') > -1) {
-          replyEn = 'To propagate Pothos: snip just below a brown node, place in clean water near bright light, and roots will sprout within 2 weeks!';
-          replyAr = 'لإكثار البوتس: قص غصناً أسفل العقدة البنية مباشرة، وضعه في كوب ماء نظيف بمكان مضيء وستظهر الجذور خلال أسبوعين!';
-        }
-
-        state.messages.push({ sender: 'ai', en: replyEn, ar: replyAr });
-        saveState();
-        render();
-        window.scrollTo(0, document.body.scrollHeight);
-      }, 700);
     }
 
     function render() {
       document.documentElement.lang = state.lang;
       document.documentElement.dir = state.lang === 'ar' ? 'rtl' : 'ltr';
       const app = document.getElementById('app');
-
-      if (!state.onboarded) {
-        app.innerHTML = renderOnboarding();
-        return;
-      }
+      if (!state.onboarded) { app.innerHTML = renderOnboarding(); return; }
+      if (state.screen === 'details' && !viewing) state.screen = 'home';
 
       let body = '';
-      if (state.screen === 'home') body = renderHome();
-      else if (state.screen === 'identify') body = renderIdentify();
-      else if (state.screen === 'details') body = renderDetails();
-      else if (state.screen === 'doctor') body = renderDoctor();
-      else if (state.screen === 'ai') body = renderAI();
-      else if (state.screen === 'myplants') body = renderMyPlants();
-      else if (state.screen === 'discover') body = renderDiscover();
-      else if (state.screen === 'premium') body = renderPremium();
-      else if (state.screen === 'profile') body = renderProfile();
+      const s = state.screen;
+      if (s === 'home') body = renderHome();
+      else if (s === 'identify') body = renderIdentify();
+      else if (s === 'details') body = renderDetails();
+      else if (s === 'doctor') body = renderDoctor();
+      else if (s === 'ai') body = renderAI();
+      else if (s === 'myplants') body = renderMyPlants();
+      else if (s === 'discover') body = renderDiscover();
+      else if (s === 'premium') body = renderPremium();
+      else if (s === 'profile') body = renderProfile();
 
-      const hideNav = ['details', 'premium'].indexOf(state.screen) > -1;
-      const navHtml = hideNav ? '' : '<nav class="bottom-nav">' +
-        '<button class="nav-item ' + (state.screen === 'home' ? 'active' : '') + '" onclick="go(\'home\')">' + icons.home + '<span>' + t().nav.home + '</span></button>' +
-        '<button class="nav-item ' + (state.screen === 'myplants' ? 'active' : '') + '" onclick="go(\'myplants\')">' + icons.plant + '<span>' + t().nav.plants + '</span></button>' +
+      const hideNav = ['details', 'premium'].indexOf(s) > -1;
+      const nav = hideNav ? '' : '<nav class="bottom-nav">' +
+        '<button class="nav-item ' + (s === 'home' ? 'active' : '') + '" onclick="go(\'home\')">' + icons.home + '<span>' + t().nav.home + '</span></button>' +
+        '<button class="nav-item ' + (s === 'myplants' ? 'active' : '') + '" onclick="go(\'myplants\')">' + icons.plant + '<span>' + t().nav.plants + '</span></button>' +
         '<div class="nav-scan-wrap"><button class="nav-scan-btn" onclick="go(\'identify\')">' + icons.camera + '</button></div>' +
-        '<button class="nav-item ' + (state.screen === 'discover' ? 'active' : '') + '" onclick="go(\'discover\')">' + icons.compass + '<span>' + t().nav.discover + '</span></button>' +
-        '<button class="nav-item ' + (state.screen === 'ai' ? 'active' : '') + '" onclick="go(\'ai\')">' + icons.sparkle + '<span>' + t().nav.ai + '</span></button>' +
-      '</nav>';
+        '<button class="nav-item ' + (s === 'discover' ? 'active' : '') + '" onclick="go(\'discover\')">' + icons.compass + '<span>' + t().nav.discover + '</span></button>' +
+        '<button class="nav-item ' + (s === 'ai' ? 'active' : '') + '" onclick="go(\'ai\')">' + icons.sparkle + '<span>' + t().nav.ai + '</span></button></nav>';
 
-      app.innerHTML = body + navHtml + renderModal();
-
-      if (liveStream) {
-        const vid = document.getElementById('live-video');
-        if (vid) vid.srcObject = liveStream;
-      }
+      app.innerHTML = body + nav + renderModal();
+      if (liveStream) { const vid = document.getElementById('live-video'); if (vid) vid.srcObject = liveStream; }
     }
 
     render();
