@@ -1,493 +1,1389 @@
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#174b35">
-<title>PlantUp — My Plants</title>
+<title>PlantUp | Smart Plant Care</title>
 
 <style>
 :root{
---green:#174b35;
---green2:#28764e;
+--g:#174b35;
+--g2:#26734d;
 --bg:#f5f8f3;
---line:#e1e9e1;
---muted:#6d7b72
+--white:#fff;
+--muted:#718078;
+--line:#e2eae2
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:#203027;font:15px Arial,sans-serif}
-button,input{font:inherit}
-button{cursor:pointer;border:0;border-radius:10px;padding:11px 15px;font-weight:700}
-.app{min-height:100vh;display:grid;grid-template-columns:230px 1fr}
-.side{background:#123d2b;color:#fff;padding:24px 16px}
-.brand{font-size:25px;font-weight:800;margin:8px 10px 30px}
-.brand span{color:#a9d9ad}
-nav{display:grid;gap:7px}
-nav button{background:transparent;color:#dce9df;text-align:left}
-nav button.active,nav button:hover{background:#ffffff20;color:#fff}
+body{
+margin:0;
+background:var(--bg);
+color:#203027;
+font:15px Arial,sans-serif
+}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+.layout{
+display:grid;
+grid-template-columns:245px 1fr;
+min-height:100vh
+}
+aside{
+background:#123d2b;
+color:white;
+padding:25px 16px
+}
+.brand{
+font-size:26px;
+font-weight:bold;
+padding:10px;
+margin-bottom:30px
+}
+.brand span{color:#9ed4a6}
+nav{display:grid;gap:8px}
+nav button{
+border:0;
+background:transparent;
+color:#d9e8dc;
+text-align:left;
+padding:14px;
+border-radius:12px
+}
+nav button.active,nav button:hover{
+background:#ffffff20;
+color:white
+}
 main{min-width:0}
-header{height:68px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:sticky;top:0;z-index:3}
-header button,.secondary{background:#e8f2e9;color:var(--green)}
-.content{max-width:1150px;margin:auto;padding:28px}
+header{
+height:70px;
+background:white;
+border-bottom:1px solid var(--line);
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 30px;
+position:sticky;
+top:0;
+z-index:3
+}
+header button,.btn{
+border:0;
+border-radius:10px;
+padding:11px 16px;
+font-weight:bold
+}
+header button{
+background:#e8f3e9;
+color:var(--g)
+}
+.content{
+max-width:1200px;
+margin:auto;
+padding:30px
+}
 .page{display:none}
 .page.active{display:block}
-.hero{background:linear-gradient(120deg,#123d2b,#328052);color:white;padding:30px;border-radius:20px;display:flex;justify-content:space-between;align-items:center;gap:20px}
-.hero h1{font-size:clamp(28px,4vw,42px);margin:8px 0}
-.hero p{color:#dcecdf;max-width:620px;line-height:1.6}
-.hero .plant{font-size:90px}
-h2{margin:28px 0 14px}
-.title{font-size:30px;margin:0 0 8px}
-.muted{color:var(--muted)}
-.card{background:white;border:1px solid var(--line);border-radius:16px;padding:19px;margin:0 0 16px}
-.primary{background:var(--green);color:#fff}
-.secondary{border:1px solid var(--line)}
-.danger{background:#fff0ee;color:#a33}
-.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
-.scanner{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.drop{min-height:260px;border:2px dashed #aec9b3;background:#f1f7f1;border-radius:15px;display:grid;place-items:center;text-align:center;padding:15px}
-.drop img{max-width:100%;max-height:270px;object-fit:contain;border-radius:12px}
-.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-input{width:100%;padding:12px;border:1px solid var(--line);border-radius:10px;margin:7px 0}
-.result{background:#f5f8f5;border:1px solid var(--line);border-radius:12px;padding:14px;margin-top:12px;white-space:pre-wrap;line-height:1.55}
-.results{display:grid;gap:10px;margin-top:12px}
-.candidate{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:12px;padding:10px}
-.candidate img{width:76px;height:76px;object-fit:cover;border-radius:9px;background:#edf3ed}
-.candidate .info{flex:1;min-width:0}
-.candidate strong{display:block}
-.candidate small{color:var(--muted)}
-.candidate button{background:#e8f2e9;color:var(--green)}
-.plants{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
-.plant-card{overflow:hidden;padding:0}
-.plant-card img{width:100%;height:175px;object-fit:cover;background:#edf3ed;display:block}
-.plant-card .body{padding:14px}
-.plant-card h3{margin:3px 0}
-.plant-card p{font-size:12px;color:var(--muted);margin:5px 0}
-.empty{text-align:center;padding:35px;color:var(--muted);background:#fff;border:1px dashed #cbd9cc;border-radius:15px}
-.mobile{display:none}
-footer{text-align:center;color:#849087;font-size:12px;padding:25px}
-
-@media(max-width:800px){
-.app{display:block}
-.side{display:none}
-header{padding:0 15px}
-.content{padding:18px 14px 90px}
-.hero .plant{display:none}
-.grid,.plants{grid-template-columns:repeat(2,minmax(0,1fr))}
-.scanner{grid-template-columns:1fr}
-.mobile{display:flex;position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid var(--line);justify-content:space-around;padding:8px 2px;z-index:5}
-.mobile button{background:white;color:var(--muted);font-size:11px;padding:7px}
-.mobile button.active{color:var(--green)}
-.mobile span{display:block;font-size:19px}
+.hero{
+background:linear-gradient(120deg,#123d2b,#318052);
+color:white;
+padding:38px;
+border-radius:22px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:20px
 }
-@media(max-width:480px){
-.plants,.grid{grid-template-columns:1fr 1fr}
-.plant-card img{height:135px}
+.hero h1{
+font-size:clamp(28px,4vw,44px);
+max-width:620px;
+margin:10px 0
+}
+.hero p{
+color:#d9eadc;
+max-width:550px;
+line-height:1.7
+}
+.hero .plant{font-size:100px}
+.btn{
+background:var(--g);
+color:white;
+margin-top:8px
+}
+.btn.light{
+background:#e5f1e6;
+color:var(--g)
+}
+.btn.outline{
+background:white;
+color:var(--g);
+border:1px solid var(--line)
+}
+.btn:disabled{
+opacity:.5;
+cursor:not-allowed
+}
+h2{margin:30px 0 15px}
+.grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:15px
+}
+.card{
+background:white;
+border:1px solid var(--line);
+border-radius:16px;
+padding:20px;
+margin-bottom:15px;
+min-width:0
+}
+.card h3{margin:8px 0}
+.card p{
+color:var(--muted);
+line-height:1.6
+}
+.symbol{
+font-size:30px;
+background:#e8f3e9;
+width:52px;
+height:52px;
+border-radius:14px;
+display:grid;
+place-items:center
+}
+.title{
+font-size:30px;
+margin:0 0 8px
+}
+.sub{
+color:var(--muted);
+margin-bottom:25px
+}
+input,textarea,select{
+width:100%;
+padding:12px;
+border:1px solid var(--line);
+border-radius:10px;
+background:white;
+margin:7px 0
+}
+.scanner{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:16px
+}
+.drop{
+border:2px dashed #abc8b0;
+border-radius:16px;
+background:#f0f6ef;
+min-height:260px;
+display:grid;
+place-items:center;
+text-align:center;
+padding:20px
+}
+.drop img{
+max-width:100%;
+max-height:250px;
+border-radius:12px;
+object-fit:contain
+}
+.result{
+background:#f4f8f4;
+border:1px solid var(--line);
+padding:15px;
+border-radius:12px;
+white-space:pre-wrap;
+margin-top:15px;
+line-height:1.6;
+overflow-wrap:anywhere
+}
+.plant-card-image{
+width:100%;
+height:170px;
+object-fit:cover;
+border-radius:12px;
+background:#f0f6ef
+}
+.plant-meta{
+color:var(--muted);
+font-size:12px;
+margin:5px 0 12px
+}
+.chat{
+height:330px;
+overflow:auto;
+background:#f7faf7;
+padding:15px;
+border:1px solid var(--line);
+border-radius:14px
+}
+.bubble{
+padding:12px;
+background:white;
+border:1px solid var(--line);
+border-radius:12px;
+margin:9px 0;
+max-width:90%;
+white-space:pre-wrap
+}
+.me{
+margin-left:auto;
+background:#e4f2e6
+}
+.row{
+display:flex;
+gap:8px;
+align-items:center
+}
+.row input{flex:1;min-width:0}
+small{color:var(--muted)}
+.mobile{display:none}
+.empty-state{
+text-align:center;
+padding:35px 18px;
+color:var(--muted);
+background:white;
+border:1px dashed #abc8b0;
+border-radius:16px;
+grid-column:1/-1
+}
+.empty-state .symbol{
+margin:0 auto 12px
+}
+footer{
+text-align:center;
+color:var(--muted);
+padding:30px;
+font-size:12px
+}
+@media(max-width:800px){
+.layout{display:block}
+aside{display:none}
+header{padding:0 15px}
+.content{padding:18px 14px 95px}
+.hero{padding:25px}
+.hero .plant{display:none}
+.grid{grid-template-columns:1fr 1fr}
+.scanner{grid-template-columns:1fr}
+.mobile{
+display:flex;
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+background:white;
+border-top:1px solid var(--line);
+justify-content:space-around;
+padding:9px 2px;
+z-index:5
+}
+.mobile button{
+border:0;
+background:white;
+color:#63736a;
+font-size:11px
+}
+.mobile button.active{
+color:var(--g);
+font-weight:bold
+}
+.mobile span{
+display:block;
+font-size:20px;
+margin-bottom:3px
+}
+}
+@media(max-width:450px){
+.grid{grid-template-columns:1fr 1fr}
+.card{padding:14px}
 .title{font-size:25px}
+.plant-card-image{height:135px}
 }
 </style>
 </head>
 
 <body>
-<div class="app">
 
-<aside class="side">
+<div class="layout">
+
+<aside>
 <div class="brand">🌿 Plant<span>Up</span></div>
-<nav id="sideNav">
+
+<nav id="side">
 <button class="active" data-page="home">⌂ Home</button>
 <button data-page="scanner">⌕ Smart Scanner</button>
+<button data-page="doctor">✚ Plant Doctor</button>
 <button data-page="plants">♧ My Plants</button>
+<button data-page="explore">◎ Add a Plant</button>
+<button data-page="assistant">✧ Assistant</button>
 <button data-page="settings">⚙ Settings</button>
 </nav>
 </aside>
 
 <main>
+
 <header>
-<strong>🌿 PlantUp</strong>
-<button id="lang">العربية</button>
+<strong>🌱 PlantUp</strong>
+<button id="language">العربية</button>
 </header>
 
 <div class="content">
 
 <!-- HOME -->
+
 <section class="page active" id="home">
+
 <div class="hero">
 <div>
-<small>WELCOME TO PLANTUP</small>
-<h1 data-en="Your personal garden, powered by plant recognition." data-ar="حديقتك الشخصية، مدعومة بالتعرّف الذكي على النباتات.">
-Your personal garden, powered by plant recognition.
-</h1>
-<p data-en="Take a photo, identify the plant, review the match and save it to your own collection." data-ar="التقط صورة، تعرّف على النبات، راجع النتيجة ثم احفظه في مجموعتك.">
-Take a photo, identify the plant, review the match and save it to your own collection.
+<small style="color:#bde0c5">WELCOME TO PLANTUP</small>
+<h1>A healthier garden starts here.</h1>
+<p>
+Identify plants, discover their needs and build a better plant-care routine.
 </p>
-<button class="secondary" data-go="scanner">＋ Identify a plant</button>
+<button class="btn light" data-go="scanner">
+Identify a Plant →
+</button>
 </div>
 <div class="plant">🪴</div>
 </div>
 
-<h2>My collection</h2>
-<div id="homePlants" class="plants"></div>
-<div id="homeEmpty" class="empty">Your collection is empty. Scan your first plant to add it.</div>
+<h2>Your Garden</h2>
+
+<div class="grid">
+
+<div class="card">
+<div class="symbol">🌿</div>
+<h3 id="count">0</h3>
+<small>Saved Plants</small>
+</div>
+
+<div class="card">
+<div class="symbol">📷</div>
+<h3>Smart Scanner</h3>
+<small>Identify from a photo</small>
+</div>
+
+<div class="card">
+<div class="symbol">🩺</div>
+<h3>Plant Doctor</h3>
+<small>Plant health guidance</small>
+</div>
+
+</div>
+
+<h2>Discover PlantUp</h2>
+
+<div class="grid">
+
+<div class="card">
+<div class="symbol">🔎</div>
+<h3>Plant Scanner</h3>
+<p>Identify a plant from your own photo.</p>
+<button class="btn" data-go="scanner">Open Scanner</button>
+</div>
+
+<div class="card">
+<div class="symbol">🩺</div>
+<h3>Plant Doctor</h3>
+<p>Understand common plant symptoms.</p>
+<button class="btn" data-go="doctor">Check Plant</button>
+</div>
+
+<div class="card">
+<div class="symbol">💬</div>
+<h3>AI Assistant</h3>
+<p>Get general plant-care advice.</p>
+<button class="btn" data-go="assistant">Ask Assistant</button>
+</div>
+
+</div>
 </section>
 
 <!-- SCANNER -->
+
 <section class="page" id="scanner">
+
 <h1 class="title">Smart Plant Scanner</h1>
-<p class="muted">Take a photo or upload one. PlantUp will ask your identification backend for possible matches and reference images.</p>
+<p class="sub">Upload a leaf, flower or full plant photo.</p>
 
 <div class="scanner">
 
 <div class="card">
+
 <div class="drop">
-<div id="placeholder">
-<div style="font-size:48px">📷</div>
-<b>Place your plant in the frame</b>
-<p class="muted">Use a clear photo of leaves, flowers or the whole plant.</p>
-</div>
-<img id="preview" alt="Your plant photo" hidden>
+
+<div id="empty">
+<div style="font-size:55px">🌱</div>
+<h3>Place your plant in the frame</h3>
+<p>Choose a photo or use your camera.</p>
+
+<button class="btn outline" id="choose">
+Upload Image
+</button>
+
+<button class="btn" id="camera">
+Open Camera
+</button>
 </div>
 
-<input id="photo" type="file" accept="image/*" capture="environment" hidden>
+<img id="preview" alt="Selected plant photo" hidden>
 
-<div class="actions">
-<button class="primary" id="take">Take / Upload Photo</button>
-<button class="secondary" id="clear">Clear</button>
 </div>
+
+<input type="file" id="photo" accept="image/*" hidden>
+
+<button class="btn outline" id="clear" style="width:100%">
+Clear Photo
+</button>
+
 </div>
 
 <div class="card">
-<h3>Identification</h3>
-<p class="muted">Review the best matches before saving. A reference photo is shown when your backend returns an image URL.</p>
 
-<button class="primary" id="identify" style="width:100%">
-Identify this plant
+<h3>Identification Result</h3>
+
+<p>
+Identify your plant using the connected Pl@ntNet service.
+</p>
+
+<button class="btn" id="scan" style="width:100%">
+Identify Plant
 </button>
 
-<div id="status" class="result">Choose a photo to begin.</div>
-<div id="matches" class="results"></div>
+<div class="result" id="scanResult">
+Your results will appear here.
+</div>
+
+<button class="btn outline" id="saveResult" disabled style="width:100%">
+Save to My Plants
+</button>
+
+</div>
+</div>
+</section>
+
+<!-- PLANT DOCTOR -->
+
+<section class="page" id="doctor">
+
+<h1 class="title">Plant Doctor 🩺</h1>
+<p class="sub">Select the symptoms you notice.</p>
+
+<div class="card">
+
+<label for="symptom">Plant symptom</label>
+
+<select id="symptom">
+<option value="yellow">Yellow leaves</option>
+<option value="brown">Brown spots or tips</option>
+<option value="wilting">Wilting</option>
+<option value="mold">White mold or coating</option>
+<option value="pests">Insects or pests</option>
+<option value="slow">Slow growth</option>
+</select>
+
+<label for="details">Additional information</label>
+
+<textarea id="details" rows="3" placeholder="Describe your plant..."></textarea>
+
+<button class="btn" id="diagnose">
+Analyze Symptoms
+</button>
+
+<div class="result" id="diagnosis">
+Your plant-care guidance will appear here.
 </div>
 
 </div>
 </section>
 
 <!-- MY PLANTS -->
+
 <section class="page" id="plants">
-<h1 class="title">My Plants</h1>
-<p class="muted">Only plants you identify and confirm appear here. No sample plant list is preloaded.</p>
-<div id="plantGrid" class="plants"></div>
-<div id="plantEmpty" class="empty">No plants saved yet. Use Smart Scanner to identify your first plant.</div>
+
+<h1 class="title">My Plants 🌿</h1>
+
+<p class="sub">
+Your personal plant collection. Only plants you add will appear here.
+</p>
+
+<div class="card">
+
+<h3>Add a plant manually</h3>
+
+<div class="row">
+<input id="plantName" placeholder="Enter plant name" aria-label="Plant name">
+<button class="btn" id="add">Add</button>
+</div>
+
+<small>
+You can also identify a plant with a photo using Smart Scanner.
+</small>
+
+</div>
+
+<div class="grid" id="plantList"></div>
+
+</section>
+
+<!-- ADD PLANT -->
+
+<section class="page" id="explore">
+
+<h1 class="title">Add a New Plant 🌱</h1>
+
+<p class="sub">
+Build your own collection. PlantUp does not add sample plants automatically.
+</p>
+
+<div class="grid">
+
+<div class="card">
+<div class="symbol">📷</div>
+<h3>Identify from a photo</h3>
+<p>
+Take a picture or upload an image, identify the plant, then save it to your collection.
+</p>
+<button class="btn" data-go="scanner">
+Open Smart Scanner
+</button>
+</div>
+
+<div class="card">
+<div class="symbol">✍️</div>
+<h3>Add manually</h3>
+<p>
+Already know the plant's name? Add it directly to My Plants.
+</p>
+<button class="btn" data-go="plants">
+Add Plant
+</button>
+</div>
+
+</div>
+</section>
+
+<!-- ASSISTANT -->
+
+<section class="page" id="assistant">
+
+<h1 class="title">Plant Assistant ✨</h1>
+<p class="sub">Ask questions about plant care.</p>
+
+<div class="card">
+
+<div class="chat" id="chat">
+<div class="bubble">
+Hello! 🌿 Tell me your plant name and how I can help.
+</div>
+</div>
+
+<div class="row">
+<input id="question" placeholder="Ask about watering, light, soil...">
+<button class="btn" id="send">Send</button>
+</div>
+
+<small>
+This version uses built-in general plant-care guidance. Connect an AI backend for a real AI assistant.
+</small>
+
+</div>
 </section>
 
 <!-- SETTINGS -->
+
 <section class="page" id="settings">
-<h1 class="title">Settings</h1>
+
+<h1 class="title">Settings ⚙</h1>
+<p class="sub">Configure the secure plant identification service.</p>
 
 <div class="card">
-<h3>Secure identification backend</h3>
-<p class="muted">
-Enter your HTTPS backend endpoint. Do not put your Pl@ntNet API key in this HTML file. The backend must accept multipart/form-data with field <code>image</code> and return JSON using the response shape described below.
+
+<h3>Backend Connection</h3>
+
+<p>
+Enter your HTTPS backend endpoint. Never put your Pl@ntNet API key in this public HTML file.
 </p>
 
-<input id="endpoint" type="url" placeholder="https://your-backend.example.com/identify">
+<input id="endpoint" placeholder="https://your-backend.com/identify">
 
-<button class="primary" id="saveEndpoint">Save endpoint</button>
+<button class="btn" id="saveEndpoint">
+Save Endpoint
+</button>
 
-<div id="settingsStatus" class="result">No endpoint configured.</div>
+<div class="result" id="settingsResult">
+No backend configured.
+</div>
+
 </div>
 
 <div class="card">
-<h3>Expected backend response</h3>
-<pre style="white-space:pre-wrap;overflow-wrap:anywhere">
-{
-  "results": [{
-    "scientificName": "Monstera deliciosa",
-    "commonName": "Monstera",
-    "score": 0.97,
-    "referenceImageUrl": "https://...",
-    "imageSource": "Source name",
-    "imageLicense": "CC BY 4.0"
-  }]
-}
-</pre>
-<p class="muted">The backend must obtain identification from Pl@ntNet and return image URLs it is permitted to display, with attribution/license metadata where required.</p>
+
+<h3>Privacy & Storage</h3>
+
+<p>
+Your plant collection and optimized plant photos are stored in this browser on this device.
+Identification photos are sent to your configured backend only when you press Identify Plant.
+</p>
+
+<p>
+Production version should use Supabase Database and Supabase Storage for account-based, cross-device collections.
+</p>
+
 </div>
 </section>
 
-<footer>PlantUp © 2026</footer>
+<footer>
+PlantUp © 2026 — Grow better, one leaf at a time.
+</footer>
+
 </div>
 
-<nav class="mobile">
+<nav class="mobile" id="mobile">
 <button class="active" data-page="home"><span>⌂</span>Home</button>
 <button data-page="scanner"><span>⌕</span>Scan</button>
 <button data-page="plants"><span>♧</span>Plants</button>
-<button data-page="settings"><span>⚙</span>Settings</button>
+<button data-page="explore"><span>＋</span>Add</button>
+<button data-page="assistant"><span>✧</span>Assistant</button>
 </nav>
 
 </main>
 </div>
 
 <script>
-const $=s=>document.querySelector(s);
-let language='en',photoFile=null,photoData='',matches=[];
 
-let plants=JSON.parse(localStorage.getItem('plantup_plants_dynamic')||'[]');
+const $ = selector => document.querySelector(selector);
 
-function navigate(id){
-document.querySelectorAll('.page').forEach(x=>x.classList.toggle('active',x.id===id));
-document.querySelectorAll('[data-page]').forEach(x=>x.classList.toggle('active',x.dataset.page===id));
+let photo = null;
+let photoPreviewUrl = null;
+let lastResult = null;
+let lastIdentifiedName = "";
+
+let plants = loadPlants();
+
+/* LOAD SAVED PLANTS */
+
+function loadPlants() {
+
+try {
+
+const saved = JSON.parse(
+localStorage.getItem("plantup_plants") || "[]"
+);
+
+if (!Array.isArray(saved)) return [];
+
+return saved.map((item,index) => {
+
+if (typeof item === "string") {
+
+return {
+id:"legacy-" + index + "-" + Date.now(),
+name:item,
+image:null,
+date:"",
+source:"manual"
+};
+
+}
+
+return {
+id:item.id || ("plant-" + index + "-" + Date.now()),
+name:String(item.name || "Unnamed plant"),
+image:item.image || null,
+date:item.date || "",
+source:item.source || "manual"
+};
+
+});
+
+} catch(error) {
+
+console.error(error);
+return [];
+
+}
+
+}
+
+/* NAVIGATION */
+
+function go(id) {
+
+document.querySelectorAll(".page").forEach(page => {
+page.classList.toggle("active",page.id === id);
+});
+
+document.querySelectorAll("[data-page]").forEach(button => {
+button.classList.toggle("active",button.dataset.page === id);
+});
+
 window.scrollTo(0,0);
-if(id==='plants')renderPlants();
+
 }
 
-document.querySelectorAll('[data-page]').forEach(b=>b.onclick=()=>navigate(b.dataset.page));
-document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>navigate(b.dataset.go));
-
-$('#lang').onclick=()=>{
-language=language==='en'?'ar':'en';
-document.documentElement.lang=language;
-document.documentElement.dir=language==='ar'?'rtl':'ltr';
-document.querySelectorAll('[data-en]').forEach(e=>e.textContent=e.dataset[language]);
-$('#lang').textContent=language==='ar'?'English':'العربية';
-};
-
-$('#take').onclick=()=>$('#photo').click();
-
-$('#photo').onchange=async e=>{
-photoFile=e.target.files[0]||null;
-if(!photoFile)return;
-
-if(!photoFile.type.startsWith('image/')){
-alert('Please select an image file.');
-return;
-}
-
-photoData=await resizeImage(photoFile);
-$('#preview').src=photoData;
-$('#preview').hidden=false;
-$('#placeholder').hidden=true;
-$('#status').textContent='Photo ready. Press Identify this plant.';
-$('#matches').innerHTML='';
-matches=[];
-};
-
-function resizeImage(file){
-return new Promise((resolve,reject)=>{
-const reader=new FileReader();
-reader.onload=()=>{
-const img=new Image();
-img.onload=()=>{
-const max=1600;
-const scale=Math.min(1,max/Math.max(img.width,img.height));
-const c=document.createElement('canvas');
-c.width=Math.round(img.width*scale);
-c.height=Math.round(img.height*scale);
-c.getContext('2d').drawImage(img,0,0,c.width,c.height);
-resolve(c.toDataURL('image/jpeg',.86));
-};
-img.onerror=reject;
-img.src=reader.result;
-};
-reader.onerror=reject;
-reader.readAsDataURL(file);
+document.querySelectorAll("[data-page]").forEach(button => {
+button.addEventListener("click",() => go(button.dataset.page));
 });
-}
 
-$('#clear').onclick=()=>{
-photoFile=null;
-photoData='';
-$('#photo').value='';
-$('#preview').hidden=true;
-$('#placeholder').hidden=false;
-$('#matches').innerHTML='';
-$('#status').textContent='Choose a photo to begin.';
-};
-
-$('#saveEndpoint').onclick=()=>{
-const v=$('#endpoint').value.trim();
-try{
-if(!v)throw Error('Enter a backend URL');
-const u=new URL(v);
-if(u.protocol!=='https:')throw Error('HTTPS is required');
-localStorage.setItem('plantup_identify_endpoint',v);
-$('#settingsStatus').textContent='Endpoint saved on this device.';
-}catch(e){
-$('#settingsStatus').textContent=e.message;
-}
-};
-
-$('#endpoint').value=localStorage.getItem('plantup_identify_endpoint')||'';
-
-function safeImage(url){
-try{
-const u=new URL(url);
-return ['https:'].includes(u.protocol)?u.href:'';
-}catch{return ''}
-}
-
-function renderMatches(list){
-$('#matches').innerHTML='';
-
-list.forEach((m,i)=>{
-const wrap=document.createElement('div');
-wrap.className='candidate';
-
-const img=document.createElement('img');
-img.alt='Plant reference';
-img.src=safeImage(m.referenceImageUrl)||'data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80"><rect width="100%" height="100%" fill="#e8f2e9"/><text x="50%" y="55%" text-anchor="middle" font-size="28">🌿</text></svg>');
-img.onerror=()=>{img.removeAttribute('src')};
-
-const info=document.createElement('div');
-info.className='info';
-
-const name=document.createElement('strong');
-name.textContent=m.commonName||m.scientificName||'Unknown plant';
-
-const sci=document.createElement('small');
-sci.textContent=m.scientificName||'';
-
-const score=document.createElement('small');
-score.textContent=typeof m.score==='number'?'Match: '+Math.round(m.score*100)+'%':'';
-
-const attribution=document.createElement('small');
-attribution.textContent=[m.imageSource,m.imageLicense].filter(Boolean).join(' • ');
-
-info.append(name,sci,document.createElement('br'),score,document.createElement('br'),attribution);
-
-const save=document.createElement('button');
-save.textContent='Add to My Plants';
-save.onclick=()=>savePlant(m);
-
-wrap.append(img,info,save);
-$('#matches').append(wrap);
+document.querySelectorAll("[data-go]").forEach(button => {
+button.addEventListener("click",() => go(button.dataset.go));
 });
+
+/* LANGUAGE BUTTON */
+
+$("#language").addEventListener("click",() => {
+alert("Arabic interface translation can be added in the next localization update.");
+});
+
+/* SAVE PLANTS */
+
+function persistPlants() {
+
+try {
+
+localStorage.setItem(
+"plantup_plants",
+JSON.stringify(plants)
+);
+
+renderPlants();
+return true;
+
+} catch(error) {
+
+alert("Browser storage is full. Try removing some saved plant photos.");
+console.error(error);
+return false;
+
 }
 
-$('#identify').onclick=async()=>{
-if(!photoFile){
-$('#status').textContent='Please take or upload a plant photo first.';
+}
+
+/* RENDER MY PLANTS */
+
+function renderPlants() {
+
+$("#count").textContent = plants.length;
+
+const list = $("#plantList");
+list.innerHTML = "";
+
+if(plants.length === 0) {
+
+const empty = document.createElement("div");
+empty.className = "empty-state";
+
+const icon = document.createElement("div");
+icon.className = "symbol";
+icon.textContent = "🌱";
+
+const heading = document.createElement("h3");
+heading.textContent = "Your garden is waiting";
+
+const message = document.createElement("p");
+message.textContent = "No plants added yet. Identify a plant from a photo or add its name manually.";
+
+const scanButton = document.createElement("button");
+scanButton.className = "btn";
+scanButton.textContent = "Identify a Plant";
+scanButton.addEventListener("click",() => go("scanner"));
+
+empty.append(icon,heading,message,scanButton);
+list.appendChild(empty);
+
 return;
+
 }
 
-const endpoint=localStorage.getItem('plantup_identify_endpoint');
+plants.forEach(plant => {
 
-if(!endpoint){
-$('#status').textContent='Backend is not configured. Open Settings and add your secure HTTPS identification endpoint.';
+const card = document.createElement("div");
+card.className = "card";
+
+if(plant.image) {
+
+const image = document.createElement("img");
+image.className = "plant-card-image";
+image.src = plant.image;
+image.alt = plant.name;
+card.appendChild(image);
+
+} else {
+
+const symbol = document.createElement("div");
+symbol.className = "symbol";
+symbol.textContent = "🪴";
+card.appendChild(symbol);
+
+}
+
+const name = document.createElement("h3");
+name.textContent = plant.name;
+
+const meta = document.createElement("div");
+meta.className = "plant-meta";
+meta.textContent = plant.date ? "Added: " + plant.date : "Your plant";
+
+const source = document.createElement("small");
+source.textContent = plant.source === "scanner"
+? "Identified from photo"
+: "Added to your collection";
+
+const remove = document.createElement("button");
+remove.className = "btn outline";
+remove.textContent = "Delete";
+
+remove.addEventListener("click",() => {
+
+if(!confirm("Delete " + plant.name + " from My Plants?")) return;
+
+plants = plants.filter(item => item.id !== plant.id);
+
+persistPlants();
+
+});
+
+card.append(name,meta,source,remove);
+list.appendChild(card);
+
+});
+
+}
+
+/* ADD PLANT */
+
+function addPlant(name,image = null,source = "manual") {
+
+const cleanName = String(name || "").trim();
+
+if(!cleanName) {
+
+alert("Please enter a plant name.");
+return false;
+
+}
+
+const plant = {
+
+id:(window.crypto && crypto.randomUUID)
+? crypto.randomUUID()
+: String(Date.now()) + Math.random().toString(16).slice(2),
+
+name:cleanName,
+image:image,
+date:new Date().toLocaleDateString(),
+source:source
+
+};
+
+plants.unshift(plant);
+
+if(!persistPlants()) {
+
+plants.shift();
+return false;
+
+}
+
+return true;
+
+}
+
+$("#add").addEventListener("click",() => {
+
+const name = $("#plantName").value.trim();
+
+if(addPlant(name)) {
+$("#plantName").value = "";
+}
+
+});
+
+$("#plantName").addEventListener("keydown",event => {
+
+if(event.key === "Enter") {
+$("#add").click();
+}
+
+});
+
+/* IMAGE UPLOAD AND CAMERA */
+
+function releasePreviewUrl() {
+
+if(photoPreviewUrl) {
+
+URL.revokeObjectURL(photoPreviewUrl);
+photoPreviewUrl = null;
+
+}
+
+}
+
+function showSelectedPhoto(file) {
+
+if(!file) return;
+
+if(!file.type.startsWith("image/")) {
+
+alert("Please choose an image file.");
 return;
+
 }
 
-try{
-$('#identify').disabled=true;
-$('#status').textContent='Identifying plant…';
-$('#matches').innerHTML='';
+photo = file;
 
-const form=new FormData();
-form.append('image',photoFile,photoFile.name);
+releasePreviewUrl();
 
-const response=await fetch(endpoint,{
-method:'POST',
+photoPreviewUrl = URL.createObjectURL(file);
+
+$("#preview").src = photoPreviewUrl;
+$("#preview").hidden = false;
+$("#empty").hidden = true;
+
+$("#scanResult").textContent =
+"Photo ready. Press Identify Plant.";
+
+$("#saveResult").disabled = true;
+
+lastResult = null;
+lastIdentifiedName = "";
+
+}
+
+$("#choose").addEventListener("click",() => {
+
+$("#photo").removeAttribute("capture");
+$("#photo").click();
+
+});
+
+$("#camera").addEventListener("click",() => {
+
+$("#photo").setAttribute("capture","environment");
+$("#photo").click();
+
+});
+
+$("#photo").addEventListener("change",event => {
+
+showSelectedPhoto(
+event.target.files && event.target.files[0]
+);
+
+});
+
+/* CLEAR IMAGE */
+
+$("#clear").addEventListener("click",() => {
+
+photo = null;
+$("#photo").value = "";
+
+releasePreviewUrl();
+
+$("#preview").removeAttribute("src");
+$("#preview").hidden = true;
+
+$("#empty").hidden = false;
+
+$("#saveResult").disabled = true;
+
+$("#scanResult").textContent =
+"Your results will appear here.";
+
+lastResult = null;
+lastIdentifiedName = "";
+
+});
+
+/* EXTRACT IDENTIFIED PLANT NAME */
+
+function extractPlantName(data) {
+
+if(!data) return "";
+
+if(typeof data === "string") return data.trim();
+
+if(data.name) return String(data.name);
+
+if(data.scientificName) return String(data.scientificName);
+
+if(data.result && typeof data.result === "string") {
+return data.result.trim();
+}
+
+if(data.result && data.result.name) {
+return String(data.result.name);
+}
+
+if(Array.isArray(data.results) && data.results[0]) {
+
+const first = data.results[0];
+const species = first.species || {};
+
+const scientific =
+species.scientificNameWithoutAuthor ||
+species.scientificName ||
+first.name;
+
+const common =
+Array.isArray(species.commonNames)
+? species.commonNames[0]
+: "";
+
+return common
+? common + " (" + (scientific || "identified plant") + ")"
+: (scientific || "Identified plant");
+
+}
+
+return "";
+
+}
+
+function readableResult(data) {
+
+if(typeof data === "string") return data;
+
+const name = extractPlantName(data);
+
+if(name) return name;
+
+try {
+return JSON.stringify(data,null,2);
+} catch(error) {
+return "Plant identified.";
+}
+
+}
+
+/* IDENTIFY PLANT */
+
+$("#scan").addEventListener("click",async() => {
+
+if(!photo) {
+
+$("#scanResult").textContent =
+"Please upload or take a photo first.";
+
+return;
+
+}
+
+const endpoint = localStorage.getItem("plantup_endpoint");
+
+if(!endpoint) {
+
+$("#scanResult").textContent =
+"Backend not configured. Open Settings and add your secure HTTPS identification endpoint.";
+
+return;
+
+}
+
+try {
+
+const url = new URL(endpoint);
+
+if(url.protocol !== "https:") {
+throw new Error("The backend endpoint must use HTTPS.");
+}
+
+$("#scan").disabled = true;
+
+$("#scanResult").textContent = "Analyzing image...";
+
+const form = new FormData();
+
+form.append("image",photo,photo.name || "plant-photo.jpg");
+
+const response = await fetch(endpoint,{
+method:"POST",
 body:form
 });
 
-if(!response.ok)throw Error('Backend returned HTTP '+response.status);
-
-const data=await response.json();
-
-matches=Array.isArray(data.results)?data.results:(data.result?[data.result]:[]);
-
-if(!matches.length)throw Error('No plant matches returned');
-
-$('#status').textContent='Review the possible matches and choose the correct plant.';
-renderMatches(matches);
-
-}catch(e){
-$('#status').textContent='Identification failed: '+e.message+'. Check backend availability and CORS configuration.';
-}finally{
-$('#identify').disabled=false;
-}
-};
-
-function savePlant(m){
-const item={
-id:Date.now()+'-'+Math.random().toString(36).slice(2,7),
-commonName:m.commonName||m.scientificName||'Unknown plant',
-scientificName:m.scientificName||'',
-score:m.score??null,
-referenceImageUrl:safeImage(m.referenceImageUrl),
-imageSource:m.imageSource||'',
-imageLicense:m.imageLicense||'',
-capturedPhoto:photoData,
-addedAt:new Date().toISOString()
-};
-
-plants.unshift(item);
-localStorage.setItem('plantup_plants_dynamic',JSON.stringify(plants));
-renderPlants();
-$('#status').textContent=item.commonName+' was added to My Plants.';
-navigate('plants');
+if(!response.ok) {
+throw new Error("Server status " + response.status);
 }
 
-function renderPlants(){
-const target=$('#plantGrid');
-const home=$('#homePlants');
+const data = await response.json();
 
-target.innerHTML='';
-home.innerHTML='';
+lastResult = data;
+lastIdentifiedName = extractPlantName(data);
 
-plants.forEach((p,i)=>{
-const card=document.createElement('article');
-card.className='card plant-card';
+$("#scanResult").textContent = readableResult(data);
 
-const img=document.createElement('img');
-img.src=p.referenceImageUrl||p.capturedPhoto||'';
-img.alt=p.commonName;
+$("#saveResult").disabled = !lastIdentifiedName;
 
-img.onerror=()=>{
-if(p.capturedPhoto&&img.src!==p.capturedPhoto)
-img.src=p.capturedPhoto;
-else img.style.display='none';
-};
+if(!lastIdentifiedName) {
 
-const body=document.createElement('div');
-body.className='body';
+$("#scanResult").textContent +=
+"\n\nNo plant name was found in this backend response. Check the backend response format.";
 
-const h=document.createElement('h3');
-h.textContent=p.commonName;
-
-const sci=document.createElement('p');
-sci.textContent=p.scientificName;
-
-const confidence=document.createElement('p');
-confidence.textContent=p.score==null?'':('Identification match: '+Math.round(p.score*100)+'%');
-
-const source=document.createElement('p');
-source.textContent=[p.imageSource,p.imageLicense].filter(Boolean).join(' • ');
-
-const del=document.createElement('button');
-del.className='danger';
-del.textContent='Remove';
-
-del.onclick=()=>{
-plants.splice(i,1);
-localStorage.setItem('plantup_plants_dynamic',JSON.stringify(plants));
-renderPlants();
-};
-
-body.append(h,sci,confidence,source,del);
-card.append(img,body);
-target.append(card);
-
-if(i<4){
-const mini=card.cloneNode(true);
-mini.querySelector('button')?.remove();
-home.append(mini);
 }
+
+} catch(error) {
+
+$("#scanResult").textContent =
+"Identification failed: " + error.message +
+". Check your backend and CORS settings.";
+
+} finally {
+
+$("#scan").disabled = false;
+
+}
+
 });
 
-$('#plantEmpty').style.display=plants.length?'none':'block';
-$('#homeEmpty').style.display=plants.length?'none':'block';
+/* COMPRESS IMAGE BEFORE LOCAL STORAGE */
+
+function imageToDataUrl(file,maxSize = 1000,quality = 0.78) {
+
+return new Promise((resolve,reject) => {
+
+const reader = new FileReader();
+
+reader.onerror = () => reject(
+new Error("Could not read the selected image.")
+);
+
+reader.onload = () => {
+
+const image = new Image();
+
+image.onerror = () => reject(
+new Error("Could not process the selected image.")
+);
+
+image.onload = () => {
+
+const scale = Math.min(
+1,
+maxSize / Math.max(image.width,image.height)
+);
+
+const canvas = document.createElement("canvas");
+
+canvas.width = Math.max(
+1,
+Math.round(image.width * scale)
+);
+
+canvas.height = Math.max(
+1,
+Math.round(image.height * scale)
+);
+
+const context = canvas.getContext("2d");
+
+context.drawImage(
+image,
+0,
+0,
+canvas.width,
+canvas.height
+);
+
+resolve(canvas.toDataURL("image/jpeg",quality));
+
+};
+
+image.src = reader.result;
+
+};
+
+reader.readAsDataURL(file);
+
+});
+
 }
 
+/* SAVE IDENTIFIED PLANT */
+
+$("#saveResult").addEventListener("click",async() => {
+
+if(!lastIdentifiedName) return;
+
+const button = $("#saveResult");
+
+button.disabled = true;
+button.textContent = "Saving...";
+
+try {
+
+const imageData = photo
+? await imageToDataUrl(photo)
+: null;
+
+if(addPlant(lastIdentifiedName,imageData,"scanner")) {
+
+$("#scanResult").textContent =
+"Plant saved successfully to My Plants: " +
+lastIdentifiedName;
+
+go("plants");
+
+}
+
+} catch(error) {
+
+alert(error.message);
+
+} finally {
+
+button.textContent = "Save to My Plants";
+button.disabled = !lastIdentifiedName;
+
+}
+
+});
+
+/* PLANT DOCTOR */
+
+const advice = {
+
+yellow:
+"Yellow leaves may be caused by overwatering, underwatering, poor drainage or light conditions. Check soil moisture before watering.",
+
+brown:
+"Brown tips may relate to low humidity, inconsistent watering, sun scorch or mineral buildup.",
+
+wilting:
+"Wilting can result from dry soil or waterlogged roots. Check soil several centimeters deep before watering.",
+
+mold:
+"White growth may be mineral residue, surface fungi or pests. Improve airflow and inspect closely.",
+
+pests:
+"Isolate the plant. Inspect leaf undersides and stems. Use a suitable plant-safe treatment according to its label.",
+
+slow:
+"Slow growth may relate to insufficient light, depleted soil, temperature or natural seasonal dormancy."
+
+};
+
+$("#diagnose").addEventListener("click",() => {
+
+const guidance = advice[$("#symptom").value];
+const extra = $("#details").value.trim();
+
+$("#diagnosis").textContent =
+guidance +
+(extra ? "\n\nYour notes: " + extra : "") +
+"\n\nFor severe or spreading symptoms, consult a qualified horticulturist.";
+
+});
+
+/* PLANT ASSISTANT */
+
+function assistantAnswer(question) {
+
+const text = question.toLowerCase();
+
+if(/water|watering|ري|مياه|اسق/.test(text)) {
+
+return "Water according to your plant's needs, not a fixed calendar. Check soil moisture first and ensure good drainage.";
+
+}
+
+if(/yellow|اصفر|اصفرار/.test(text)) {
+
+return advice.yellow;
+
+}
+
+if(/light|sun|شمس|ضوء/.test(text)) {
+
+return "Most indoor foliage plants prefer bright indirect light. Introduce stronger sunlight gradually.";
+
+}
+
+if(/soil|تربة|سماد|fertiliz/.test(text)) {
+
+return "Use an airy soil mix suitable for your plant and a pot with drainage holes. Fertilize moderately during active growth.";
+
+}
+
+return "Tell me the plant name, indoor or outdoor location, light conditions and symptoms for more relevant care guidance.";
+
+}
+
+function sendQuestion() {
+
+const question = $("#question").value.trim();
+
+if(!question) return;
+
+const userBubble = document.createElement("div");
+userBubble.className = "bubble me";
+userBubble.textContent = question;
+
+const answerBubble = document.createElement("div");
+answerBubble.className = "bubble";
+answerBubble.textContent = assistantAnswer(question);
+
+$("#chat").append(userBubble,answerBubble);
+
+$("#question").value = "";
+
+$("#chat").scrollTop = $("#chat").scrollHeight;
+
+}
+
+$("#send").addEventListener("click",sendQuestion);
+
+$("#question").addEventListener("keydown",event => {
+
+if(event.key === "Enter") {
+sendQuestion();
+}
+
+});
+
+/* BACKEND SETTINGS */
+
+$("#saveEndpoint").addEventListener("click",() => {
+
+const value = $("#endpoint").value.trim();
+
+try {
+
+if(!value) {
+throw new Error("Enter an endpoint.");
+}
+
+const url = new URL(value);
+
+if(url.protocol !== "https:") {
+throw new Error("HTTPS is required.");
+}
+
+localStorage.setItem("plantup_endpoint",value);
+
+$("#settingsResult").textContent =
+"Endpoint saved on this device.";
+
+} catch(error) {
+
+$("#settingsResult").textContent = error.message;
+
+}
+
+});
+
+/* INITIALIZE */
+
+$("#endpoint").value =
+localStorage.getItem("plantup_endpoint") || "";
+
 renderPlants();
+
 </script>
+
 </body>
 </html>
